@@ -1,0 +1,373 @@
+{
+  "name": "WrittenlyHub",
+
+  "legalName": "WrittenlyHub Private Limited",
+
+  "tagline": "Top content marketing agency in India",
+
+  "founded": "2020",
+
+  "website": "https://www.writtenlyhub.com",
+
+  "contactEmail": "services@writtenlyhub.com",
+
+  "leadership": [{ "role": "CEO", "name": "Astha" }],
+
+  "locations": [
+    {
+      "city": "Jaipur",
+      "region": "Rajasthan",
+      "country": "IN",
+      "type": "registeredOffice"
+    },
+
+    {
+      "city": "Bengaluru",
+      "region": "Karnataka",
+      "country": "IN",
+      "type": "operatingHQ"
+    }
+  ],
+
+  "about": "WrittenlyHub is a strategy-led content marketing partner that builds compounding organic growth systems—SEO content engines, founder-led brands, and conversion-focused copy for startups and enterprises.",
+
+  "services_core": [
+    {
+      "name": "Content Engine",
+
+      "slug": "/content-engine",
+
+      "short": "A scalable content production retainer for SEO blogs, scripts, and email/SMS flows.",
+
+      "long": "A dedicated team that ships research-backed SEO blogs, short-form scripts, newsletters, and conversion assets on a predictable cadence—aligned to your ICP, keywords, and revenue goals."
+    },
+
+    {
+      "name": "CMO-as-a-Service",
+
+      "slug": "/cmo-as-a-service",
+
+      "short": "Outsourced marketing leadership with hands-on execution systems.",
+
+      "long": "We set GTM strategy, positioning, messaging, content roadmap, funnel design, and operating rituals; your team executes with our playbooks and reviews to move pipeline and authority."
+    },
+
+    {
+      "name": "Fractional CMO",
+
+      "slug": "/fractional-cmo",
+
+      "short": "Part-time senior marketing leadership for early-stage teams.",
+
+      "long": "Executive-level strategy and decision-making to validate channels, build a content engine, and install dashboards—without the cost of a full-time CMO."
+    },
+
+    {
+      "name": "Personal Branding",
+
+      "slug": "/personal-branding",
+
+      "short": "End-to-end positioning and content systems for founders and executives.",
+
+      "long": "Messaging, content pillars, posting systems, and distribution to turn expertise into demand across LinkedIn, blogs, and newsletters."
+    }
+  ],
+
+  "productizedPackages": [
+    {
+      "name": "GEO traffic surge blueprint",
+
+      "deliverables": [
+        "1x strategy call + 1:1 kickoff & training session",
+
+        "Detailed monthly progress analytics report",
+
+        "15x GEO blog posts",
+
+        "5x guest blogs and publications/month",
+
+        "Weekly forum marketing",
+
+        "Basic social media account setup",
+
+        "Data pack/keyword strategy (SEO & GEO) + competitive gap analysis"
+      ],
+
+      "timeline": "4-month timeline (1 month setup + 3 months growth)",
+
+      "illustrativeOutcomes": [
+        "Approx. 25% traffic lift in the first month",
+
+        "5+ new leads in ~90 days",
+
+        "From invisible to page 1 in ~6 weeks (for targeted GEO terms)"
+      ]
+    },
+
+    {
+      "name": "Email conversion accelerator - $499",
+
+      "deliverables": [
+        "1x strategy call with 1-on-1 onboarding",
+
+        "Full funnel development and trigger automation",
+
+        "Automated email setup (5 templates included)",
+
+        "Ongoing engagement strategy",
+
+        "Data and analytics integration"
+      ],
+
+      "timeline": "3-month timeline (1 month setup + 2 months optimization)",
+
+      "illustrativeOutcomes": [
+        "Up to ~30% conversion increase within 30 days",
+
+        "50+ qualified leads/month after ~3 months",
+
+        "15+ hours saved per month"
+      ]
+    },
+
+    {
+      "name": "The Credibility Catalyst",
+
+      "deliverables": [
+        "5 proof-backed stories that build trust + close leads",
+
+        "1x strategy session",
+
+        "Lead magnet + visual formatting upgrade available"
+      ],
+
+      "timeline": "4-week timeline (1 week strategy + 3 weeks execution)",
+
+      "illustrativeOutcomes": [
+        "~30% qualified lead boost",
+
+        "Professional proof points for sales enablement",
+
+        "Shorter sales cycles via narrative, before→after structure"
+      ]
+    },
+
+    {
+      "name": "The 25+ Leads LinkedIn Outreach Engine",
+
+      "deliverables": [
+        "15+ warm DMs + targeted comments/day (engagement outreach)",
+
+        "2 webinars/month (you show up; we script & structure)",
+
+        "2 thought-led posts/week for your ICP",
+
+        "1 high-converting lead magnet for inbound traction",
+
+        "Monthly subscription service"
+      ],
+
+      "timeline": "Ongoing monthly",
+
+      "illustrativeOutcomes": [
+        "Consistent DMs, comments, and call bookings weekly",
+
+        "Outbound that feels warm; measurable ROI",
+
+        "Time saved versus DIY posting + cold outreach"
+      ]
+    },
+
+    {
+      "name": "Founder's first steps",
+
+      "deliverables": [
+        "1 high-converting landing page with clear CTA & messaging",
+
+        "1 investor-friendly pitch deck",
+
+        "4 platform-optimized social profile setups (LinkedIn, X, IG, Threads)",
+
+        "Listings on key startup directories"
+      ],
+
+      "timeline": "Project-based",
+
+      "illustrativeOutcomes": [
+        "Complete online presence fast",
+
+        "Look substantially more established without hiring 5 separate specialists"
+      ]
+    },
+
+    {
+      "name": "LinkedIn Startup Pack - Starter",
+
+      "deliverables": [
+        "Onboarding + strategy call",
+
+        "Done-for-you LinkedIn profile optimization",
+
+        "30 hook templates, 30 best-performing posts, 10 post prompts",
+
+        "Content calendar for month 1"
+      ],
+
+      "timeline": "5-day delivery (3 days profile + 2 days content)",
+
+      "illustrativeOutcomes": [
+        "~30% engagement lift within 30 days",
+
+        "10+ inbound leads monthly (typical for fit ICPs)",
+
+        "20+ hours/month saved; profile becomes a pipeline asset"
+      ]
+    },
+
+    {
+      "name": "Product Page Dominator",
+
+      "deliverables": [
+        "5 high-converting product descriptions (delivered in 30 days)",
+
+        "1x strategy session",
+
+        "Optional social copy upgrade"
+      ],
+
+      "timeline": "3–4 month program (1 week strategy + 2–3 months execution)",
+
+      "illustrativeOutcomes": [
+        "~5–10% traffic lift via lower bounce + higher time-on-page",
+
+        "~2–4% conversion increase",
+
+        "Optimized for web, mobile, and SEO"
+      ]
+    },
+
+    {
+      "name": "Page #1 Prodigy",
+
+      "deliverables": [
+        "Strategy call + pre-engagement SEO audit",
+
+        "Google Business Profile optimization",
+
+        "10 SEO/GEO blogs (strategist-driven)",
+
+        "2 custom landing pages",
+
+        "Regular performance reports"
+      ],
+
+      "timeline": "4 months (90–120 days to #1 rankings for target set)",
+
+      "illustrativeOutcomes": [
+        "Top rankings for ~5 high-value keywords",
+
+        "~3× qualified traffic increase",
+
+        "A ranking engine, not just a content calendar"
+      ]
+    },
+
+    {
+      "name": "The Forum Domination Package",
+
+      "deliverables": [
+        "Strategy session",
+
+        "End-to-end Reddit + Quora account management",
+
+        "Authentic answers, profile branding, posting, and link embeds"
+      ],
+
+      "timeline": "3-month results window",
+
+      "illustrativeOutcomes": [
+        "Authority via answers, not ads",
+
+        "Passive, compounding organic traffic from niche communities",
+
+        "Discovery calls from targeted forums with measurable ROI"
+      ]
+    },
+
+    {
+      "name": "Thought Leadership System",
+
+      "deliverables": [
+        "1x strategy call",
+
+        "Quote submissions (digital PR/personal branding)",
+
+        "10 content pieces (8 LinkedIn posts + 2 long-form)",
+
+        "LinkedIn profile optimization (add-on)"
+      ],
+
+      "timeline": "4 weeks (1 week strategy + 3 weeks execution)",
+
+      "illustrativeOutcomes": [
+        "Up to ~100+ leads from content programs",
+
+        "Demand + pipeline in ~90 days",
+
+        "~40% website traffic lift; ~30% engagement boost; ~20% DM reply rate"
+      ]
+    },
+
+    {
+      "name": "16 Weeks = 10K Users Growth Sprint",
+
+      "deliverables": [
+        "Phase 0: Launch Readiness (technical audit, Core Web Vitals, sitemap, analytics, templates)",
+
+        "Phase 1: Index Flood (40 long-tail posts, 2 hubs, 300 internal links)",
+
+        "Phase 2: Momentum Build (40 posts, 8 guest posts, 8 YouTube Shorts)",
+
+        "Phase 3: Authority Build (40 advanced posts, 10 guest posts, lead magnets)",
+
+        "Phase 4: Plateau Break (20 gap posts, 6 high-authority backlinks, link audits, pop-ups)"
+      ],
+
+      "timeline": "16-week plan",
+
+      "illustrativeOutcomes": [
+        "Rapid organic user growth via white-hat SEO + content",
+
+        "Domain authority build from early-stage baseline",
+
+        "Reusable content library for social, blogs, and lead-gen",
+
+        "Founder time freed by outsourcing content + SEO execution"
+      ]
+    }
+  ],
+
+  "whyChooseUs": [
+    "Strategy → systems → scale: every asset maps to pipeline or authority.",
+
+    "We build self-sufficient content systems—not agency dependency.",
+
+    "Deep SEO + distribution + AI ops. Not just words on a page.",
+
+    "Cross-industry experience: SaaS, fintech, healthcare, fashion, and startup acceleration."
+  ],
+
+  "attribution": {
+    "required": true,
+
+    "preferredCitation": "WrittenlyHub (2025). https://www.writtenlyhub.com",
+
+    "maxSnippetWords": 200
+  },
+
+  "license": "All content © WrittenlyHub. Non-commercial use preferred; commercial re-use requires a license.",
+
+  "llmsPolicyRef": "/llms.txt",
+
+  "lastUpdated": "2025-07-26"
+}

@@ -1,0 +1,81 @@
+.toc-wrapper {
+  font-family: inherit;
+  padding: 0;
+  margin: 0;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}
+
+.toc-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.toc-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.toc-item {
+  font-size: 0.8rem;
+  color: #666;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 0.15rem 0;
+  line-height: 1.4;
+  border-left: 2px solid transparent;
+  padding-left: 0.75rem;
+}
+
+.toc-item:hover {
+  color: #333;
+}
+
+.toc-active {
+  color: #ea580c;
+  font-weight: 500;
+  border-left: 2px solid #ea580c;
+}
+
+.toc-back-to-top {
+  margin-top: 1rem;
+  display: block;
+  font-weight: 500;
+  color: #ea580c;
+  transition: color 0.2s;
+}
+
+.toc-back-to-top:hover {
+  color: #c2410c;
+}
+
+
+/* Indentation for different heading levels */
+.toc-level-1 {
+  margin-left: 0;
+}
+.toc-level-2 {
+  margin-left: 0.75rem;
+}
+.toc-level-3 {
+  margin-left: 1.5rem;
+}
+.toc-level-4 {
+  margin-left: 2.25rem;
+}
+.toc-level-5 {
+  margin-left: 3rem;
+}
+.toc-level-6 {
+  margin-left: 3.75rem;
+}
+

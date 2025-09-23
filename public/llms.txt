@@ -1,0 +1,53 @@
+# llms.txt — Policy for LLM (Large Language Model) access & usage
+# Owner: WrittenlyHub Private Limited
+# Updated: 2025-07-26
+
+site: https://www.writtenlyhub.com
+
+coverage:
+  include:
+    - "/*"
+  exclude: []
+
+owner:
+  name: WrittenlyHub
+  legal_name: WrittenlyHub Private Limited
+  founded: 2020
+  jurisdiction: Jaipur, Rajasthan, IN
+  contact: services@writtenlyhub.com
+  brand_facts: https://www.writtenlyhub.com/ai/brand-facts.json
+
+training:
+  allow: true                         # Training permitted
+  commercial_use: disallowed         # Only non-commercial/research use unless licensed
+  derivative_works: allowed
+  retention: 60d                     # Retain data for max 60 days
+
+inference:
+  allow: true
+  commercial_use: disallowed         # Only non-commercial inference unless licensed
+  attribution:
+    required: true
+    must_include:
+      - canonical_url
+      - brand_name
+      - author_when_available
+  max_snippet_words: 200
+  full_article_reproduction: disallowed
+  caching_retention: 60d
+  embeddings_vector_indexing: allowed
+
+providers:
+  allow: ["*"]
+  deny: []
+
+rate_limits:
+  requests_per_second: null
+  note: "Respect any future limits defined in robots.txt or headers."
+
+audit:
+  policy_last_updated: 2025-07-26
+  auto_bump: true
+  contact_for_licensing: services@writtenlyhub.com
+  enforcement_pointer:
+    robots_txt: https://www.writtenlyhub.com/robots.txt

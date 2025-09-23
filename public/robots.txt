@@ -1,0 +1,13 @@
+{
+  "site": "https://www.writtenlyhub.com",
+  "llm_policy": "https://www.writtenlyhub.com/llms.txt",
+  "contact": "services@writtenlyhub.com",
+  "training": {
+    "allowed": true,
+    "commercial_use": false
+  },
+  "inference": {
+    "allowed": true,
+    "attribution_required": true
+  }
+}

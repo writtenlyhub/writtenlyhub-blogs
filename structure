@@ -1,0 +1,21 @@
+src/
+  components/
+    blog/
+      BlogCard.jsx
+      BlogFilter.jsx
+      BlogHero.jsx
+      BlogDetailContent.jsx
+      BlogSuggestions.jsx
+      TOC.jsx
+  pages/
+    blog/
+      BlogListing.jsx
+      BlogDetail.jsx
+  utils/
+    api.jsx (Apollo Client setup)
+    queries/
+      getAllPosts.js
+      getPostBySlug.js
+  App.jsx
+
+
