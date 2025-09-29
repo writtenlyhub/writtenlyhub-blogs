@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const BlogCard = ({ post, getCategoryName }) => {
   if (!post) {
@@ -18,26 +18,28 @@ const BlogCard = ({ post, getCategoryName }) => {
     );
   }
 
-  const featuredImage = 
-    post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 
-    '/assets/placeholder.png';
-  
-  const date = post.date 
-    ? new Date(post.date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
+  const featuredImage =
+    post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+    "/assets/placeholder.png";
+
+  const date = post.date
+    ? new Date(post.date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
       })
-    : '';
+    : "";
 
-  const categoryId = post.wh_category?.[0];
-  const categoryName = categoryId && getCategoryName ? getCategoryName(categoryId) : '';
+  const categoryId = post.categories?.[0];
+  const categoryName =
+    categoryId && getCategoryName ? getCategoryName(categoryId) : "";
 
-  const title = post.title?.rendered || 'Untitled Post';
-  const excerpt = post.excerpt?.rendered || '';
-  const slug = post.slug || '';
+  const title = post.title?.rendered || "Untitled Post";
+  const excerpt = post.excerpt?.rendered || "";
+  const slug = post.slug || "";
 
-  const cleanExcerpt = excerpt.replace(/<[^>]*>/g, '').substring(0, 120) + '...';
+  const cleanExcerpt =
+    excerpt.replace(/<[^>]*>/g, "").substring(0, 120) + "...";
 
   return (
     <div className="block bg-white rounded-xl overflow-hidden border border-[#022150] w-full h-full group flex flex-col">
@@ -45,11 +47,11 @@ const BlogCard = ({ post, getCategoryName }) => {
         src={featuredImage}
         alt={title}
         className="w-full h-48 object-cover"
-        onError={(e) => {
-          e.target.src = '/assets/placeholder.png';
+        onError={e => {
+          e.target.src = "/assets/placeholder.png";
         }}
       />
-      
+
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex justify-between items-center mb-2">
           {categoryName && (
@@ -57,25 +59,21 @@ const BlogCard = ({ post, getCategoryName }) => {
               {categoryName}
             </span>
           )}
-          {date && (
-            <span className="text-xs text-[#022150]">
-              {date}
-            </span>
-          )}
+          {date && <span className="text-xs text-[#022150]">{date}</span>}
         </div>
-        
+
         <h3
           className="text-xl font-semibold mb-2 line-clamp-2 text-[#022150] select-text"
           dangerouslySetInnerHTML={{ __html: title }}
         />
-        
+
         {cleanExcerpt && (
           <p className="text-sm text-[#022150] line-clamp-3 mb-4 leading-relaxed select-text flex-grow">
             {cleanExcerpt}
           </p>
         )}
-        
-        <Link 
+
+        <Link
           to={`/blog/${slug}`}
           className="text-orange-500 font-semibold text-xs border border-orange-500 rounded-full px-8 py-2 hover:bg-orange-500 hover:text-white transition-colors duration-200 inline-block w-fit"
         >
@@ -92,18 +90,18 @@ BlogCard.propTypes = {
     slug: PropTypes.string,
     date: PropTypes.string,
     title: PropTypes.shape({
-      rendered: PropTypes.string
+      rendered: PropTypes.string,
     }),
     excerpt: PropTypes.shape({
-      rendered: PropTypes.string
+      rendered: PropTypes.string,
     }),
-    wh_category: PropTypes.array,
+    categories: PropTypes.array,
     _embedded: PropTypes.shape({
       author: PropTypes.array,
-      'wp:featuredmedia': PropTypes.array
-    })
+      "wp:featuredmedia": PropTypes.array,
+    }),
   }),
-  getCategoryName: PropTypes.func
+  getCategoryName: PropTypes.func,
 };
 
 export default BlogCard;

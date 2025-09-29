@@ -1,5 +1,5 @@
 // src/utils/api.js
-const API_BASE_URL = 'https://www.writtenlyhub.com/wp-json/wp/v2';
+const API_BASE_URL = "https://www.writtenlyhub.com/wp-json/wp/v2";
 
 class WordPressAPI {
   constructor() {
@@ -8,11 +8,14 @@ class WordPressAPI {
 
   async fetchAPI(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
-    
+
+    // debug: log the exact runtime URL
+    console.log("WP API fetch URL:", url);
+
     try {
       const response = await fetch(url, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...options.headers,
         },
         ...options,
@@ -25,7 +28,7 @@ class WordPressAPI {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('API Error:', error);
+      console.error("API Error:", error);
       throw error;
     }
   }
@@ -39,25 +42,25 @@ class WordPressAPI {
       ...params.filters,
     });
 
-    const endpoint = `/wh_blogs?${queryParams}`;
+    const endpoint = `/posts?${queryParams}`;
     return this.fetchAPI(endpoint);
   }
 
   // Get single post by slug
   async getPostBySlug(slug) {
-    const endpoint = `/wh_blogs?slug=${slug}&_embed=true`;
+    const endpoint = `/posts?slug=${slug}&_embed=true`;
     const posts = await this.fetchAPI(endpoint);
     return posts[0] || null;
   }
 
   // Get categories
   async getCategories() {
-    return this.fetchAPI('/wh_category?per_page=100');
+    return this.fetchAPI("/categories?per_page=100");
   }
 
   // Get tags
   async getTags() {
-    return this.fetchAPI('/wh_tag?per_page=100');
+    return this.fetchAPI("/tags?per_page=100");
   }
 
   // Search posts
@@ -69,46 +72,46 @@ class WordPressAPI {
       _embed: true,
     });
 
-    const endpoint = `/wh_blogs?${queryParams}`;
+    const endpoint = `/posts?${queryParams}`;
     return this.fetchAPI(endpoint);
   }
 
   // Get posts by category
   async getPostsByCategory(categoryId, params = {}) {
     const queryParams = new URLSearchParams({
-      wh_category: categoryId,
+      categories: categoryId,
       per_page: params.perPage || 10,
       page: params.page || 1,
       _embed: true,
     });
 
-    const endpoint = `/wh_blogs?${queryParams}`;
+    const endpoint = `/posts?${queryParams}`;
     return this.fetchAPI(endpoint);
   }
 
   // Get posts by tag
   async getPostsByTag(tagId, params = {}) {
     const queryParams = new URLSearchParams({
-      wh_tag: tagId,
+      tags: tagId,
       per_page: params.perPage || 10,
       page: params.page || 1,
       _embed: true,
     });
 
-    const endpoint = `/wh_blogs?${queryParams}`;
+    const endpoint = `/posts?${queryParams}`;
     return this.fetchAPI(endpoint);
   }
 
   // Get related posts (by category)
   async getRelatedPosts(postId, categoryIds = [], limit = 3) {
     const queryParams = new URLSearchParams({
-      wh_category: categoryIds.join(','),
+      categories: categoryIds.join(","),
       exclude: postId,
       per_page: limit,
       _embed: true,
     });
 
-    const endpoint = `/wh_blogs?${queryParams}`;
+    const endpoint = `/posts?${queryParams}`;
     return this.fetchAPI(endpoint);
   }
 
@@ -116,12 +119,12 @@ class WordPressAPI {
   async getRecentPosts(limit = 5) {
     const queryParams = new URLSearchParams({
       per_page: limit,
-      orderby: 'date',
-      order: 'desc',
+      orderby: "date",
+      order: "desc",
       _embed: true,
     });
 
-    const endpoint = `/wh_blogs?${queryParams}`;
+    const endpoint = `/posts?${queryParams}`;
     return this.fetchAPI(endpoint);
   }
 }

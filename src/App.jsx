@@ -1,13 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import BlogListing from './pages/blog/BlogListing';
-import BlogDetail from './pages/blog/BlogDetail';
-import Footer from './components/Footer';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import BlogListing from "./pages/blog/BlogListing";
+import BlogDetail from "./pages/blog/BlogDetail";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <Router>
       <Navbar />
+      <h1>Hello</h1>
       <Routes>
         {/* Root route: blog listing */}
         <Route path="/" element={<BlogListing />} />
