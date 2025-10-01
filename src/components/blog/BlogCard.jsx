@@ -2,6 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+const BLOG_BASE = "https://blogs.writtenlyhub.com";
+
+const getPostURL = post => {
+  if (post.link) {
+    return post.link.replace(
+      /^https?:\/\/(www\.)?writtenlyhub\.com/,
+      BLOG_BASE
+    );
+  }
+  return `${BLOG_BASE}/blog/${post.slug}`;
+};
+
 const BlogCard = ({ post, getCategoryName }) => {
   if (!post) {
     return (
@@ -74,7 +86,7 @@ const BlogCard = ({ post, getCategoryName }) => {
         )}
 
         <Link
-          to={`/blog/${slug}`}
+          to={getPostURL(post)}
           className="text-orange-500 font-semibold text-xs border border-orange-500 rounded-full px-8 py-2 hover:bg-orange-500 hover:text-white transition-colors duration-200 inline-block w-fit"
         >
           Read More

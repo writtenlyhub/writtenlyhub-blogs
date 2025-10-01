@@ -4,6 +4,18 @@ import BlogCard from "../../components/blog/BlogCard";
 import FeaturedBlogCard from "../../components/blog/FeaturedBlogCard";
 import wpAPI from "../../utils/api";
 
+const BLOG_BASE = "https://blogs.writtenlyhub.com";
+const getPostURL = post => {
+  if (post.link) {
+    return post.link.replace(
+      /^https?:\/\/(www\.)?writtenlyhub\.com/,
+      BLOG_BASE
+    );
+  }
+  // fallback if link missing
+  return `${BLOG_BASE}/blog/${post.slug}`;
+};
+
 const BlogListing = () => {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -115,6 +127,44 @@ const BlogListing = () => {
     }
   };
 
+  // const loadPosts = async () => {
+  //   try {
+  //     setLoading(true);
+
+  //     const params = {
+  //       per_page: 100,
+  //       _embed: true,
+  //       ...(filters.category && { categories: filters.category }),
+  //       ...(filters.tag && { tags: filters.tag }),
+  //       ...(filters.search && { search: filters.search }),
+  //       orderby: filters.orderby,
+  //       order: filters.order,
+  //     };
+
+  //     const response = await wpAPI.get("/posts", { params });
+
+  //     const postsData = response.data;
+  //     const totalPostsCount = parseInt(response.headers["x-wp-total"] || "0");
+
+  //     const validatedPosts = postsData.map(post => ({
+  //       ...post,
+  //       title: post.title || { rendered: "Untitled Post" },
+  //       excerpt: post.excerpt || { rendered: "" },
+  //       slug: post.slug || "",
+  //     }));
+
+  //     setPosts(validatedPosts);
+  //     setTotalPosts(totalPostsCount);
+  //     setVisiblePosts(10);
+  //     setError(null);
+  //   } catch (err) {
+  //     setError("Failed to load posts. Please try again later.");
+  //     console.error("Posts load error:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleFilterChange = newFilters => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
@@ -214,13 +264,13 @@ const BlogListing = () => {
             </div>
           ) : posts.length > 0 ? (
             <>
-              {/* Featured Post - Fully clickable */}
+              {/* // Featured Post - Fully clickable */}
               {posts[0] && visiblePosts > 0 && (
                 <div className="mb-12">
                   <div
                     className="cursor-pointer hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
                     onClick={() =>
-                      (window.location.href = `/blog/${posts[0].slug}`)
+                      (window.location.href = getPostURL(posts[0]))
                     }
                   >
                     <FeaturedBlogCard
@@ -230,22 +280,18 @@ const BlogListing = () => {
                   </div>
                 </div>
               )}
-
-              {/* Regular Posts Grid - All cards clickable */}
+              {/* // Regular Posts Grid - All cards clickable */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                 {posts.slice(1, visiblePosts).map(post => (
                   <div
                     key={post.id}
                     className="cursor-pointer hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
-                    onClick={() =>
-                      (window.location.href = `/blog/${post.slug}`)
-                    }
+                    onClick={() => (window.location.href = getPostURL(post))}
                   >
                     <BlogCard post={post} getCategoryName={getCategoryName} />
                   </div>
                 ))}
               </div>
-
               {/* Load More Button */}
               {visiblePosts < posts.length && (
                 <div className="flex justify-center mt-8 md:mt-12">
@@ -284,7 +330,6 @@ const BlogListing = () => {
                   </button>
                 </div>
               )}
-
               {/* Posts count info */}
               <div className="text-center mt-4 text-sm text-[#022150] ">
                 Showing {Math.min(visiblePosts, posts.length)} of {totalPosts}{" "}

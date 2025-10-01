@@ -8,12 +8,12 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <h1>Hello</h1>
+
       <Routes>
         {/* Root route: blog listing */}
         <Route path="/" element={<BlogListing />} />
         {/* Detail route: slug directly under root */}
-        <Route path="blog/:slug" element={<BlogDetail />} />
+        <Route path="/:category/:slug" element={<BlogDetail />} />
         {/* Catch all to listing */}
         <Route path="*" element={<BlogListing />} />
       </Routes>
