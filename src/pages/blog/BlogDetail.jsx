@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Facebook, Linkedin, Share2, Instagram } from "lucide-react";
+import { Facebook, Linkedin, Share2, Instagram, Youtube } from "lucide-react";
 import "./../../components/blog/BlogDetailContent.css";
 import BlogCard from "../../components/blog/BlogCard";
 import TOC from "../../components/blog/TOC";
@@ -357,6 +357,8 @@ const BlogDetail = () => {
   const AuthorSection = () => {
     if (!post?.author_info) return null;
 
+    console.log("Post data:", post);
+
     return (
       <div className="mb-6">
         <h4 className="text-sm font-semibold text-gray-700 mb-4">
@@ -415,7 +417,8 @@ const BlogDetail = () => {
     const iconMap = {
       facebook: { Icon: Facebook, color: "#1877F2" }, // Facebook Blue
       linkedin: { Icon: Linkedin, color: "#0077B5" }, // LinkedIn Blue
-      instagram: { Icon: Instagram, color: "#E4405F" }, // Instagram Gradient base pink/red
+      instagram: { Icon: Instagram, color: "#E4405F" }, // Instagram Gradient base pink/
+      youtube: { Icon: Youtube, color: "#FF0000" }, // YouTube Red
       share: { Icon: Share2, color: "#6B7280" }, // Neutral for generic share
     };
 
@@ -427,16 +430,29 @@ const BlogDetail = () => {
             Share this article
           </h4>
           <div className="flex flex-wrap gap-3">
-            {Object.entries(iconMap).map(([key, { Icon, color }]) => (
-              <button
-                key={key}
-                onClick={() => handleShare(key)}
-                className="p-2 rounded-full bg-gray-50 hover:bg-orange-100 transition-colors"
-                title={`Share on ${key}`}
-              >
-                <Icon size={18} color={color} />
-              </button>
-            ))}
+            {Object.entries(iconMap).map(([key, { Icon, color }]) =>
+              key === "youtube" ? (
+                <a
+                  key={key}
+                  href="https://www.youtube.com/@WrittenlyHub"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-gray-50 hover:bg-orange-100 transition-colors"
+                  title="Visit our YouTube channel"
+                >
+                  <Icon size={18} color={color} />
+                </a>
+              ) : (
+                <button
+                  key={key}
+                  onClick={() => handleShare(key)}
+                  className="p-2 rounded-full bg-gray-50 hover:bg-orange-100 transition-colors"
+                  title={`Share on ${key}`}
+                >
+                  <Icon size={18} color={color} />
+                </button>
+              )
+            )}
           </div>
         </div>
       </div>
@@ -526,7 +542,7 @@ const BlogDetail = () => {
     <div className="min-h-screen bg-white ">
       <div className="container mx-auto px-4 py-12">
         <div className="flex justify-center">
-          <div className="w-full max-w-6xl">
+          <div className="w-full max-w-8xl">
             <nav className="flex flex-wrap text-sm text-gray-500 mb-2">
               <a
                 href="https://writtenlyhub.com"
@@ -669,6 +685,66 @@ const BlogDetail = () => {
                         </button>
                       </div>
                     </div>
+                    {/* Listen to Article Section */}
+                    <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg border border-orange-200">
+                      <button
+                        onClick={() =>
+                          handleTextToSpeech(
+                            post.title.rendered + ". " + post.content?.rendered
+                          )
+                        }
+                        className="flex items-center gap-3 w-full hover:opacity-80 transition-opacity"
+                      >
+                        <div className="flex-shrink-0 p-3 bg-white rounded-full shadow-sm">
+                          {isSpeaking ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="text-orange-600"
+                            >
+                              <rect x="6" y="4" width="4" height="16"></rect>
+                              <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="text-orange-600"
+                            >
+                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                            </svg>
+                          )}
+                        </div>
+                        <div className="text-left">
+                          <div className="font-semibold text-gray-900">
+                            {isSpeaking
+                              ? "Stop Listening"
+                              : "Listen to this article"}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {isSpeaking
+                              ? "Click to pause"
+                              : "Click to play audio"}
+                          </div>
+                        </div>
+                      </button>
+                    </div>
                   </div>
                 )}
 
@@ -689,11 +765,14 @@ const BlogDetail = () => {
                     <FaqBlock items={faqs} />
                   </div>
                 )}
-                <NewsletterSubscribe />
+                {/* <NewsletterSubscribe /> */}
 
-                {/* Mobile social sharing */}
+                {/* Mobile social sharing and newsletter */}
                 <div className="lg:hidden mt-8">
                   <SocialMediaIcons />
+                  <div className="mt-6">
+                    <NewsletterSubscribe />
+                  </div>
                 </div>
               </article>
 
@@ -701,6 +780,9 @@ const BlogDetail = () => {
               <aside className="hidden lg:block lg:w-3/12">
                 <div className="sticky" style={stickyStyle}>
                   <SocialMediaIcons />
+                  <div className="mt-8">
+                    <NewsletterSubscribe />
+                  </div>
                 </div>
               </aside>
             </div>
