@@ -3,6 +3,8 @@
 
 
 ::selection {
-  background-color: #ea580c;
-  color: white;
+  background-color: #fed7aa;
+  /* orange-200 */
+  color: #1f2937;
+  /* slate-800 for readability */
 }

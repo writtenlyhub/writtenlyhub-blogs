@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Facebook, Linkedin, Share2, Instagram, Youtube } from "lucide-react";
@@ -7,6 +8,7 @@ import TOC from "../../components/blog/TOC";
 import FaqBlock from "../../components/blog/FaqBlock";
 import wpAPI from "../../utils/api";
 import NewsletterSubscribe from "../../components/blog/NewsletterSubscribe";
+import ContentForm from "./ContentForm";
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -316,41 +318,144 @@ const BlogDetail = () => {
   };
 
   // Share handler
-  const handleShare = platform => {
-    const url = window.location.href;
-    const title = post?.title?.rendered || "";
+  // const handleShare = platform => {
+  //   const url = window.location.href;
+  //   const title = post?.title?.rendered || "";
 
-    let shareUrl = "";
+  //   let shareUrl = "";
+
+  //   switch (platform) {
+  //     case "facebook":
+  //       shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+  //         url
+  //       )}`;
+  //       break;
+  //     case "linkedin":
+  //       shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+  //         url
+  //       )}`;
+  //       break;
+  //     case "instagram":
+  //       navigator.clipboard.writeText(url);
+  //       alert("Link copied to clipboard! You can share it on Instagram.");
+  //       return;
+  //     default:
+  //       if (navigator.share) {
+  //         navigator.share({
+  //           title: title,
+  //           url: url,
+  //         });
+  //       } else {
+  //         navigator.clipboard.writeText(url);
+  //         alert("Link copied to clipboard!");
+  //       }
+  //       return;
+  //   }
+
+  //   window.open(shareUrl, "_blank", "width=600,height=400");
+  // };
+
+  // Share handler
+  const handleShare = async platform => {
+    const url = window.location.href;
+    const title = post?.title?.rendered?.replace(/<[^>]*>/g, "") || "";
+    const text =
+      post?.excerpt?.rendered?.replace(/<[^>]*>/g, "").substring(0, 200) || "";
 
     switch (platform) {
       case "facebook":
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        // Facebook sharer - the URL will be pre-filled
+        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
           url
-        )}`;
+        )}&quote=${encodeURIComponent(title)}`;
+        window.open(fbUrl, "_blank", "width=600,height=400");
         break;
-      case "linkedin":
-        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-          url
-        )}`;
-        break;
-      case "instagram":
-        navigator.clipboard.writeText(url);
-        alert("Link copied to clipboard! You can share it on Instagram.");
-        return;
-      default:
-        if (navigator.share) {
-          navigator.share({
-            title: title,
-            url: url,
-          });
-        } else {
-          navigator.clipboard.writeText(url);
-          alert("Link copied to clipboard!");
-        }
-        return;
-    }
 
-    window.open(shareUrl, "_blank", "width=600,height=400");
+      case "linkedin":
+        // LinkedIn new sharing format with mini parameter
+        const linkedInUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+          url
+        )}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(
+          text
+        )}`;
+        window.open(linkedInUrl, "_blank", "width=600,height=400");
+        break;
+
+      case "instagram":
+        // Instagram doesn't support direct URL sharing via web, so copy to clipboard
+        try {
+          await navigator.clipboard.writeText(url);
+          alert(
+            "✓ Link copied to clipboard!\n\n" +
+              url +
+              "\n\nInstagram doesn't support direct link sharing on web. The link has been copied - you can now paste it in your Instagram post, story, or bio."
+          );
+        } catch (err) {
+          // Fallback for browsers that don't support clipboard API
+          const textArea = document.createElement("textarea");
+          textArea.value = url;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-999999px";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          try {
+            document.execCommand("copy");
+            alert(
+              "✓ Link copied to clipboard!\n\n" +
+                url +
+                "\n\nYou can now paste it in your Instagram post, story, or bio."
+            );
+          } catch (err) {
+            alert("Please manually copy this link:\n\n" + url);
+          }
+          document.body.removeChild(textArea);
+        }
+        break;
+
+      default:
+        // Generic share using Web Share API or clipboard
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: title,
+              text: text,
+              url: url,
+            });
+          } catch (err) {
+            if (err.name !== "AbortError") {
+              try {
+                await navigator.clipboard.writeText(url);
+                alert("✓ Link copied to clipboard!");
+              } catch {
+                alert("Please manually copy this link:\n\n" + url);
+              }
+            }
+          }
+        } else {
+          try {
+            await navigator.clipboard.writeText(url);
+            alert("✓ Link copied to clipboard!");
+          } catch (err) {
+            // Fallback
+            const textArea = document.createElement("textarea");
+            textArea.value = url;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+              document.execCommand("copy");
+              alert("✓ Link copied to clipboard!");
+            } catch (err) {
+              alert("Please manually copy this link:\n\n" + url);
+            }
+            document.body.removeChild(textArea);
+          }
+        }
+        break;
+    }
   };
 
   // Author section component
@@ -538,11 +643,15 @@ const BlogDetail = () => {
   const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
   const processedContent = processContent(post.content?.rendered);
 
+  function EmbeddedForm() {
+    return <div dangerouslySetInnerHTML={{ __html: '[wpforms id="18282"]' }} />;
+  }
+
   return (
     <div className="min-h-screen bg-white ">
       <div className="container mx-auto px-4 py-12">
         <div className="flex justify-center">
-          <div className="w-full max-w-8xl">
+          <div className="w-full max-w-9xl">
             <nav className="flex flex-wrap text-sm text-gray-500 mb-2">
               <a
                 href="https://writtenlyhub.com"
@@ -562,6 +671,9 @@ const BlogDetail = () => {
               )}
             </nav>
 
+            {/* <div dangerouslySetInnerHTML={{ __html: '[wpforms id="18282"]' }} /> */}
+            <ContentForm />
+
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Table of Contents - hidden on mobile */}
               <aside className="hidden lg:block lg:w-3/12 lg:order-first">
@@ -570,12 +682,12 @@ const BlogDetail = () => {
                 </div>
               </aside>
 
-              {/*TL;DR */}
               <article className="w-full lg:w-8/12">
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                   {post.title.rendered}
                 </h1>
 
+                {/*TL;DR */}
                 {post.excerpt?.rendered && (
                   <div className="mb-8 p-6 bg-[#04265C]/[0.03] border border-[#04265C]/[0.1] rounded-xl">
                     <div className="flex items-start gap-3">
@@ -596,7 +708,7 @@ const BlogDetail = () => {
 
                 {featuredImage && (
                   <div className="mb-6">
-                    <div className="rounded-xl overflow-hidden mb-4">
+                    {/* <div className="rounded-xl overflow-hidden mb-4">
                       <img
                         src={featuredImage}
                         alt={post.title.rendered || "Blog post image"}
@@ -606,7 +718,7 @@ const BlogDetail = () => {
                           e.target.style.display = "none";
                         }}
                       />
-                    </div>
+                    </div> */}
 
                     <div
                       ref={publishedBlockRef}
@@ -634,66 +746,18 @@ const BlogDetail = () => {
                         <span className="text-xs text-gray-500 border-l border-gray-300 pl-3">
                           {calculateReadingTime(post.content?.rendered)}
                         </span>
-
-                        <button
-                          onClick={() =>
-                            handleTextToSpeech(
-                              post.title.rendered +
-                                ". " +
-                                post.content?.rendered
-                            )
-                          }
-                          className="p-1 rounded-full hover:bg-gray-200 transition-colors"
-                          title={
-                            isSpeaking
-                              ? "Stop listening"
-                              : "Listen to this article"
-                          }
-                        >
-                          {isSpeaking ? (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <rect x="6" y="4" width="4" height="16"></rect>
-                              <rect x="14" y="4" width="4" height="16"></rect>
-                            </svg>
-                          ) : (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                            </svg>
-                          )}
-                        </button>
                       </div>
                     </div>
+
                     {/* Listen to Article Section */}
-                    <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg border border-orange-200">
+                    <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg border border-orange-200 flex justify-between items-center">
                       <button
                         onClick={() =>
                           handleTextToSpeech(
                             post.title.rendered + ". " + post.content?.rendered
                           )
                         }
-                        className="flex items-center gap-3 w-full hover:opacity-80 transition-opacity"
+                        className="flex items-center gap-3 hover:opacity-80 transition-opacity"
                       >
                         <div className="flex-shrink-0 p-3 bg-white rounded-full shadow-sm">
                           {isSpeaking ? (
@@ -744,6 +808,27 @@ const BlogDetail = () => {
                           </div>
                         </div>
                       </button>
+
+                      {/* Soundwave Animation (Right Side) */}
+                      {isSpeaking && (
+                        <div className="flex gap-1 h-8 items-end">
+                          {[...Array(5)].map((_, i) => (
+                            <motion.div
+                              key={i}
+                              className="w-1 bg-orange-500 rounded"
+                              animate={{
+                                height: ["20%", "100%", "30%"],
+                              }}
+                              transition={{
+                                duration: 0.6,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: i * 0.15,
+                              }}
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
