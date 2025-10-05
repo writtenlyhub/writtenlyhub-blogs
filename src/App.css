@@ -1,4 +1,11 @@
 /* src/App.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Condensed:wght@700&family=Prime:wght@700&display=swap');
+
+.hero-title {
+  font-family: 'Prime', 'Encode Sans Semi Condensed', 'Rubik', sans-serif;
+}
+
 body {
   font-family: 'Roboto Slab', serif;
 }
@@ -85,9 +92,12 @@ html {
 
 /* Loading animations */
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: .5;
   }
@@ -132,20 +142,20 @@ html {
   .no-print {
     display: none !important;
   }
-  
+
   .blog-content {
     font-size: 12pt;
     line-height: 1.5;
   }
-  
+
   .blog-content h1 {
     font-size: 18pt;
   }
-  
+
   .blog-content h2 {
     font-size: 16pt;
   }
-  
+
   .blog-content h3 {
     font-size: 14pt;
   }
@@ -157,19 +167,19 @@ html {
     background-color: #1a202c;
     color: #f7fafc;
   }
-  
+
   .dark-mode .bg-white {
     background-color: #2d3748;
   }
-  
+
   .dark-mode .text-gray-900 {
     color: #f7fafc;
   }
-  
+
   .dark-mode .text-gray-600 {
     color: #a0aec0;
   }
-  
+
   .dark-mode .border-gray-200 {
     border-color: #4a5568;
   }

@@ -671,8 +671,136 @@ const BlogDetail = () => {
               )}
             </nav>
 
+            {/* Modern split layout */}
+            <div className="w-full mb-10">
+              <div className="rounded-3xl flex flex-col-reverse lg:flex-row items-stretch gap-0 overflow-hidden relative  border border-gray-100">
+                {/* Light gradient background overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-blue-50" />
+
+                {/* Animated gradient orbs */}
+                <div className="absolute top-0 right-1/4 w-96 h-96 bg-orange-200/40 rounded-full blur-3xl animate-pulse" />
+                <div
+                  className="absolute bottom-0 left-1/4 w-80 h-80 bg-purple-200/40 rounded-full blur-3xl animate-pulse"
+                  style={{ animationDelay: "1s" }}
+                />
+                <div
+                  className="absolute top-1/2 left-1/2 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl animate-pulse"
+                  style={{ animationDelay: "2s" }}
+                />
+
+                {/* Mesh gradient overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,106,0,0.08),transparent_50%),radial-gradient(circle_at_bottom_left,rgba(139,92,246,0.08),transparent_50%)]" />
+
+                {/* LEFT: Blog Title + TLDR */}
+                <div
+                  className="relative flex-1 p-8 md:p-12 lg:p-14 flex flex-col justify-center z-10"
+                  style={{ minHeight: "400px" }}
+                >
+                  {/* Decorative floating elements */}
+                  <div className="absolute top-10 left-10 w-2 h-2 bg-orange-400 rounded-full animate-ping" />
+                  <div
+                    className="absolute bottom-20 right-20 w-1.5 h-1.5 bg-purple-400 rounded-full animate-ping"
+                    style={{ animationDelay: "0.5s" }}
+                  />
+
+                  {/* Accent line with glow */}
+                  <div className="relative w-20 h-1.5 mb-8 overflow-hidden rounded-full">
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400 blur-sm" />
+                  </div>
+
+                  <h1
+                    className="text-3xl md:text-4xl lg:text-6xl font-black mb-8 leading-[1.1] tracking-tight"
+                    style={{
+                      fontFamily:
+                        "'Space Grotesk', 'Inter', -apple-system, sans-serif",
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+                      {post.title.rendered}
+                    </span>
+                  </h1>
+
+                  {post.excerpt?.rendered && (
+                    <div className="relative group">
+                      {/* Animated glow effect */}
+                      <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 rounded-2xl blur-md opacity-20 group-hover:opacity-30 transition-all duration-500" />
+
+                      <div className="relative p-6 md:p-8 rounded-2xl backdrop-blur-sm border border-orange-200/50 bg-white/80 shadow-xl">
+                        <div className="flex items-center gap-3 mb-4">
+                          {/* Icon with gradient */}
+                          <div className="relative">
+                            <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg blur-sm opacity-50" />
+                            <div className="relative bg-gradient-to-br from-orange-400 to-orange-600 p-2 rounded-lg shadow-lg">
+                              <svg
+                                className="w-5 h-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <h2
+                            className="text-base md:text-lg font-black uppercase tracking-wide bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent"
+                            style={{
+                              fontFamily: "'Space Grotesk', sans-serif",
+                            }}
+                          >
+                            TL;DR (Key Takeaways)
+                          </h2>
+                        </div>
+                        <div
+                          className="prose prose-sm max-w-none text-gray-700 [&>ul]:list-disc [&>ul]:ml-4 [&>li]:text-gray-700 [&>ul]:space-y-2"
+                          dangerouslySetInnerHTML={{
+                            __html: post.excerpt.rendered,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* RIGHT: Content Form */}
+                <div
+                  className="relative flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-center z-10"
+                  style={{
+                    minHeight: "400px",
+                    maxWidth: "540px",
+                  }}
+                >
+                  {/* Glass morphism card */}
+                  <div className="" />
+
+                  {/* Decorative corner accents */}
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-300/30 to-transparent rounded-bl-full" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-300/30 to-transparent rounded-tr-full" />
+
+                  {/* Subtle grid pattern */}
+                  <div
+                    className="absolute inset-0 opacity-[0.03]"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px)",
+                      backgroundSize: "20px 20px",
+                    }}
+                  />
+
+                  <div className="relative z-10">
+                    <ContentForm />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* <div dangerouslySetInnerHTML={{ __html: '[wpforms id="18282"]' }} /> */}
-            <ContentForm />
+            {/* <ContentForm /> */}
 
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Table of Contents - hidden on mobile */}
@@ -683,12 +811,12 @@ const BlogDetail = () => {
               </aside>
 
               <article className="w-full lg:w-8/12">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                {/* <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                   {post.title.rendered}
-                </h1>
+                </h1> */}
 
                 {/*TL;DR */}
-                {post.excerpt?.rendered && (
+                {/* {post.excerpt?.rendered && (
                   <div className="mb-8 p-6 bg-[#04265C]/[0.03] border border-[#04265C]/[0.1] rounded-xl">
                     <div className="flex items-start gap-3">
                       <div>
@@ -704,7 +832,7 @@ const BlogDetail = () => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
 
                 {featuredImage && (
                   <div className="mb-6">

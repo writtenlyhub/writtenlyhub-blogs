@@ -54,52 +54,91 @@ const ContentForm = () => {
 
   return (
     <div className="mt-10 bg-white border p-6 rounded-lg shadow-md max-w-2xl mx-auto">
-      <h3 className="text-xl font-bold text-orange-500 mb-2">
-        Submit Your Content
-      </h3>
+      <h3 className="text-xl font-bold text-orange-500 mb-2">Content Form</h3>
       <p className="text-gray-700 mb-4 text-sm">
         Share your details and message with us. We’ll get back to you soon.
       </p>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          className="px-4 py-2 border border-gray-300 rounded-md"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/* Name */}
+        <div className="flex flex-col">
+          <label
+            htmlFor="name"
+            className="mb-1 text-sm font-semibold text-gray-700"
+          >
+            Full Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Enter your full name"
+            className="px-4 py-2 border border-gray-300 rounded-md"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          className="px-4 py-2 border border-gray-300 rounded-md"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+        {/* Email */}
+        <div className="flex flex-col">
+          <label
+            htmlFor="email"
+            className="mb-1 text-sm font-semibold text-gray-700"
+          >
+            Email Address <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            className="px-4 py-2 border border-gray-300 rounded-md"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <input
-          type="text"
-          name="phone"
-          placeholder="Your Phone (optional)"
-          className="px-4 py-2 border border-gray-300 rounded-md"
-          value={formData.phone}
-          onChange={handleChange}
-        />
+        {/* Phone */}
+        <div className="flex flex-col">
+          <label
+            htmlFor="phone"
+            className="mb-1 text-sm font-semibold text-gray-700"
+          >
+            Phone Number
+          </label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="Enter your phone number (optional)"
+            className="px-4 py-2 border border-gray-300 rounded-md"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+        </div>
 
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          className="px-4 py-2 border border-gray-300 rounded-md"
-          rows={4}
-          value={formData.message}
-          onChange={handleChange}
-        />
+        {/* Message */}
+        <div className="flex flex-col">
+          <label
+            htmlFor="message"
+            className="mb-1 text-sm font-semibold text-gray-700"
+          >
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Write your message"
+            className="px-4 py-2 border border-gray-300 rounded-md"
+            rows={4}
+            value={formData.message}
+            onChange={handleChange}
+          />
+        </div>
 
+        {/* Submit button */}
         <button
           type="submit"
           disabled={status === "loading"}
