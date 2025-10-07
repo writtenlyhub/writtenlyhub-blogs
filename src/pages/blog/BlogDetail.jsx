@@ -21,7 +21,7 @@ const BlogDetail = () => {
   const [faqs, setFaqs] = useState([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const contentRef = useRef(null);
-  const publishedBlockRef = useRef(null); // New ref for the published block
+  const publishedBlockRef = useRef(null);
 
   // Calculate reading time
   const calculateReadingTime = text => {
@@ -318,44 +318,6 @@ const BlogDetail = () => {
   };
 
   // Share handler
-  // const handleShare = platform => {
-  //   const url = window.location.href;
-  //   const title = post?.title?.rendered || "";
-
-  //   let shareUrl = "";
-
-  //   switch (platform) {
-  //     case "facebook":
-  //       shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-  //         url
-  //       )}`;
-  //       break;
-  //     case "linkedin":
-  //       shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-  //         url
-  //       )}`;
-  //       break;
-  //     case "instagram":
-  //       navigator.clipboard.writeText(url);
-  //       alert("Link copied to clipboard! You can share it on Instagram.");
-  //       return;
-  //     default:
-  //       if (navigator.share) {
-  //         navigator.share({
-  //           title: title,
-  //           url: url,
-  //         });
-  //       } else {
-  //         navigator.clipboard.writeText(url);
-  //         alert("Link copied to clipboard!");
-  //       }
-  //       return;
-  //   }
-
-  //   window.open(shareUrl, "_blank", "width=600,height=400");
-  // };
-
-  // Share handler
   const handleShare = async platform => {
     const url = window.location.href;
     const title = post?.title?.rendered?.replace(/<[^>]*>/g, "") || "";
@@ -364,7 +326,6 @@ const BlogDetail = () => {
 
     switch (platform) {
       case "facebook":
-        // Facebook sharer - the URL will be pre-filled
         const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
           url
         )}&quote=${encodeURIComponent(title)}`;
@@ -372,7 +333,6 @@ const BlogDetail = () => {
         break;
 
       case "linkedin":
-        // LinkedIn new sharing format with mini parameter
         const linkedInUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
           url
         )}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(
@@ -382,7 +342,6 @@ const BlogDetail = () => {
         break;
 
       case "instagram":
-        // Instagram doesn't support direct URL sharing via web, so copy to clipboard
         try {
           await navigator.clipboard.writeText(url);
           alert(
@@ -391,7 +350,6 @@ const BlogDetail = () => {
               "\n\nInstagram doesn't support direct link sharing on web. The link has been copied - you can now paste it in your Instagram post, story, or bio."
           );
         } catch (err) {
-          // Fallback for browsers that don't support clipboard API
           const textArea = document.createElement("textarea");
           textArea.value = url;
           textArea.style.position = "fixed";
@@ -414,7 +372,6 @@ const BlogDetail = () => {
         break;
 
       default:
-        // Generic share using Web Share API or clipboard
         if (navigator.share) {
           try {
             await navigator.share({
@@ -437,7 +394,6 @@ const BlogDetail = () => {
             await navigator.clipboard.writeText(url);
             alert("✓ Link copied to clipboard!");
           } catch (err) {
-            // Fallback
             const textArea = document.createElement("textarea");
             textArea.value = url;
             textArea.style.position = "fixed";
@@ -465,7 +421,7 @@ const BlogDetail = () => {
     console.log("Post data:", post);
 
     return (
-      <div className="mb-6">
+      <div className="mt-8 pt-14 border-t border-gray-200">
         <h4 className="text-sm font-semibold text-gray-700 mb-4">
           About the author
         </h4>
@@ -520,16 +476,15 @@ const BlogDetail = () => {
   // Social media icons component
   const SocialMediaIcons = () => {
     const iconMap = {
-      facebook: { Icon: Facebook, color: "#1877F2" }, // Facebook Blue
-      linkedin: { Icon: Linkedin, color: "#0077B5" }, // LinkedIn Blue
-      instagram: { Icon: Instagram, color: "#E4405F" }, // Instagram Gradient base pink/
-      youtube: { Icon: Youtube, color: "#FF0000" }, // YouTube Red
-      share: { Icon: Share2, color: "#6B7280" }, // Neutral for generic share
+      facebook: { Icon: Facebook, color: "#1877F2" },
+      linkedin: { Icon: Linkedin, color: "#0077B5" },
+      instagram: { Icon: Instagram, color: "#E4405F" },
+      youtube: { Icon: Youtube, color: "#FF0000" },
+      share: { Icon: Share2, color: "#6B7280" },
     };
 
     return (
       <div className="mt-6 pt-4">
-        <AuthorSection />
         <div className="pt-4 border-t border-gray-200">
           <h4 className="text-sm font-semibold text-gray-700 mb-3">
             Share this article
@@ -564,31 +519,37 @@ const BlogDetail = () => {
     );
   };
 
-  // Custom sticky positioning hook
-  const [stickyStyle, setStickyStyle] = useState({});
+  // Custom sticky positioning - simplified
+  const [stickyTop, setStickyTop] = useState(20);
 
   useEffect(() => {
     const updateStickyPosition = () => {
       if (publishedBlockRef.current) {
         const publishedBlockRect =
           publishedBlockRef.current.getBoundingClientRect();
-        const publishedBlockBottom = publishedBlockRect.bottom + window.scrollY;
+        const scrollY = window.scrollY;
+        const publishedBlockBottom =
+          publishedBlockRect.top + scrollY + publishedBlockRect.height;
 
-        setStickyStyle({
-          top: `${Math.max(publishedBlockBottom - window.scrollY + 20, 20)}px`,
-        });
+        // Calculate the top position relative to viewport
+        const viewportTop = Math.max(publishedBlockBottom - scrollY + 20, 20);
+        setStickyTop(viewportTop);
       }
     };
 
+    // Use requestAnimationFrame for smoother updates
+    let rafId;
     const handleScroll = () => {
-      updateStickyPosition();
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateStickyPosition);
     };
 
     updateStickyPosition();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", updateStickyPosition);
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateStickyPosition);
     };
@@ -673,40 +634,50 @@ const BlogDetail = () => {
 
             {/* Modern split layout */}
             <div className="w-full mb-10">
-              <div className="rounded-3xl flex flex-col-reverse lg:flex-row items-stretch gap-0 overflow-hidden relative  border border-gray-100">
-                {/* Light gradient background overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-blue-50" />
+              <div
+                className="rounded-3xl flex flex-col-reverse lg:flex-row items-stretch gap-0 overflow-hidden relative border border-gray-100"
+                style={{ minHeight: "1000px" }}
+              >
+                {/* Solid blue background for top 2/3 */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#04265C] via-[#063A80] to-[#0A4FA5]" />
 
-                {/* Animated gradient orbs */}
-                <div className="absolute top-0 right-1/4 w-96 h-96 bg-orange-200/40 rounded-full blur-3xl animate-pulse" />
-                <div
-                  className="absolute bottom-0 left-1/4 w-80 h-80 bg-purple-200/40 rounded-full blur-3xl animate-pulse"
-                  style={{ animationDelay: "1s" }}
-                />
-                <div
-                  className="absolute top-1/2 left-1/2 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl animate-pulse"
-                  style={{ animationDelay: "2s" }}
-                />
-
-                {/* Mesh gradient overlay */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,106,0,0.08),transparent_50%),radial-gradient(circle_at_bottom_left,rgba(139,92,246,0.08),transparent_50%)]" />
+                {featuredImage && (
+                  <div
+                    className="absolute inset-x-0 bottom-0 flex items-center justify-center rounded-4xl"
+                    style={{
+                      height: "50%",
+                    }}
+                  >
+                    <img
+                      src={featuredImage || "/placeholder.svg"}
+                      alt={post.title.rendered}
+                      className="h-full object-cover rounded-4xl"
+                      style={{
+                        width: "80%",
+                        maxWidth: "80%",
+                      }}
+                    />
+                    {/* Subtle overlay on image for cohesion */}
+                    <div className="absolute inset-0 bg-blue-900/20" />
+                  </div>
+                )}
 
                 {/* LEFT: Blog Title + TLDR */}
                 <div
-                  className="relative flex-1 p-8 md:p-12 lg:p-14 flex flex-col justify-center z-10"
-                  style={{ minHeight: "400px" }}
+                  className="relative flex-1 p-8 md:p-12 lg:p-14 flex flex-col justify-start z-10 mt-8"
+                  style={{ minHeight: "600px" }}
                 >
                   {/* Decorative floating elements */}
                   <div className="absolute top-10 left-10 w-2 h-2 bg-orange-400 rounded-full animate-ping" />
                   <div
-                    className="absolute bottom-20 right-20 w-1.5 h-1.5 bg-purple-400 rounded-full animate-ping"
+                    className="absolute bottom-20 right-20 w-1.5 h-1.5 bg-blue-400 rounded-full animate-ping"
                     style={{ animationDelay: "0.5s" }}
                   />
 
                   {/* Accent line with glow */}
                   <div className="relative w-20 h-1.5 mb-8 overflow-hidden rounded-full">
                     <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400 blur-sm" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-indigo-400 to-purple-400 blur-sm opacity-30 group-hover:opacity-40 transition-all duration-500" />
                   </div>
 
                   <h1
@@ -717,17 +688,16 @@ const BlogDetail = () => {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-white via-blue-50 to-blue-100 bg-clip-text text-transparent">
                       {post.title.rendered}
                     </span>
                   </h1>
 
                   {post.excerpt?.rendered && (
                     <div className="relative group">
-                      {/* Animated glow effect */}
-                      <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 rounded-2xl blur-md opacity-20 group-hover:opacity-30 transition-all duration-500" />
+                      <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 rounded-2xl blur-md opacity-30 group-hover:opacity-4 transition-all duration-500" />
 
-                      <div className="relative p-6 md:p-8 rounded-2xl backdrop-blur-sm border border-orange-200/50 bg-white/80 shadow-xl">
+                      <div className="relative p-6 md:p-8 rounded-2xl backdrop-blur-sm border border-blue-300/30 bg-white/95 shadow-xl">
                         <div className="flex items-center gap-3 mb-4">
                           {/* Icon with gradient */}
                           <div className="relative">
@@ -741,7 +711,7 @@ const BlogDetail = () => {
                                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                                 <path
                                   fillRule="evenodd"
-                                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z"
                                   clipRule="evenodd"
                                 />
                               </svg>
@@ -769,25 +739,23 @@ const BlogDetail = () => {
 
                 {/* RIGHT: Content Form */}
                 <div
-                  className="relative flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-center z-10"
+                  className="relative flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-start z-10"
                   style={{
-                    minHeight: "400px",
+                    minHeight: "600px",
                     maxWidth: "540px",
                   }}
                 >
                   {/* Glass morphism card */}
                   <div className="" />
 
-                  {/* Decorative corner accents */}
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-300/30 to-transparent rounded-bl-full" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-300/30 to-transparent rounded-tr-full" />
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-400/20 to-transparent rounded-bl-full" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-indigo-400/20 to-transparent rounded-tr-full" />
 
-                  {/* Subtle grid pattern */}
                   <div
-                    className="absolute inset-0 opacity-[0.03]"
+                    className="absolute inset-0 opacity-[0.05]"
                     style={{
                       backgroundImage:
-                        "linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px)",
+                        "linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px)",
                       backgroundSize: "20px 20px",
                     }}
                   />
@@ -799,55 +767,26 @@ const BlogDetail = () => {
               </div>
             </div>
 
-            {/* <div dangerouslySetInnerHTML={{ __html: '[wpforms id="18282"]' }} /> */}
-            {/* <ContentForm /> */}
-
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Table of Contents - hidden on mobile */}
               <aside className="hidden lg:block lg:w-3/12 lg:order-first">
-                <div className="sticky" style={stickyStyle}>
-                  <TOC contentRef={contentRef} />
+                <div
+                  className="sticky"
+                  style={{
+                    top: `${stickyTop}px`,
+                    maxHeight: `calc(100vh - ${stickyTop}px - 20px)`,
+                  }}
+                >
+                  <div className="space-y-6">
+                    <TOC contentRef={contentRef} />
+                    <AuthorSection />
+                  </div>
                 </div>
               </aside>
 
               <article className="w-full lg:w-8/12">
-                {/* <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  {post.title.rendered}
-                </h1> */}
-
-                {/*TL;DR */}
-                {/* {post.excerpt?.rendered && (
-                  <div className="mb-8 p-6 bg-[#04265C]/[0.03] border border-[#04265C]/[0.1] rounded-xl">
-                    <div className="flex items-start gap-3">
-                      <div>
-                        <h2 className="text-lg font-bold text-[#04265C] mb-3">
-                          TL;DR (Key Takeaways)
-                        </h2>
-                        <div
-                          className="prose prose-sm text-gray-600"
-                          dangerouslySetInnerHTML={{
-                            __html: post.excerpt.rendered,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )} */}
-
                 {featuredImage && (
                   <div className="mb-6">
-                    {/* <div className="rounded-xl overflow-hidden mb-4">
-                      <img
-                        src={featuredImage}
-                        alt={post.title.rendered || "Blog post image"}
-                        className="w-full h-auto object-cover"
-                        loading="eager"
-                        onError={e => {
-                          e.target.style.display = "none";
-                        }}
-                      />
-                    </div> */}
-
                     <div
                       ref={publishedBlockRef}
                       className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 px-4 bg-gray-50 rounded-lg gap-2"
@@ -978,7 +917,6 @@ const BlogDetail = () => {
                     <FaqBlock items={faqs} />
                   </div>
                 )}
-                {/* <NewsletterSubscribe /> */}
 
                 {/* Mobile social sharing and newsletter */}
                 <div className="lg:hidden mt-8">
@@ -991,7 +929,7 @@ const BlogDetail = () => {
 
               {/* Sidebar - hidden on mobile */}
               <aside className="hidden lg:block lg:w-3/12">
-                <div className="sticky" style={stickyStyle}>
+                <div className="sticky" style={{ top: `${stickyTop}px` }}>
                   <SocialMediaIcons />
                   <div className="mt-8">
                     <NewsletterSubscribe />

@@ -1,13 +1,13 @@
-{
-  "site": "https://www.writtenlyhub.com",
-  "llm_policy": "https://www.writtenlyhub.com/llms.txt",
-  "contact": "services@writtenlyhub.com",
-  "training": {
-    "allowed": true,
-    "commercial_use": false
-  },
-  "inference": {
-    "allowed": true,
-    "attribution_required": true
-  }
-}
+# robots.txt for blogs.writtenlyhub.com
+# Plain-text format required by search engines
+
+User-agent: *
+Allow: /
+
+# Sitemap helps crawlers discover all routes fast
+Sitemap: https://blogs.writtenlyhub.com/sitemap.xml
+
+# Notes:
+# - This SPA serves client-side routes; allowing "/" covers all paths like /{category}/{slug}.
+# - Manage URL parameters (e.g., UTM) via canonical tags and Search Console rather than blocking with robots.
+# - For non-production environments, deploy a separate robots.txt that disallows all.
