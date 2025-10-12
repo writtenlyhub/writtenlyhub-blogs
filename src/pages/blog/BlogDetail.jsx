@@ -609,7 +609,7 @@ const BlogDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white ">
+    <div className="min-h-screen bg-white mx-10">
       <div className="container mx-auto px-4 py-12">
         <div className="flex justify-center">
           <div className="w-full max-w-9xl">
