@@ -4,16 +4,9 @@ import BlogCard from "../../components/blog/BlogCard";
 import FeaturedBlogCard from "../../components/blog/FeaturedBlogCard";
 import wpAPI from "../../utils/api";
 
-const BLOG_BASE = "https://blogs.writtenlyhub.com";
 const getPostURL = post => {
-  if (post.link) {
-    return post.link.replace(
-      /^https?:\/\/(www\.)?writtenlyhub\.com/,
-      BLOG_BASE
-    );
-  }
-  // fallback if link missing
-  return `${BLOG_BASE}/blog/${post.slug}`;
+  // Keep original WP link; fallback to same-site blog path
+  return post && post.link ? post.link : `/blog/${post?.slug || ""}`;
 };
 
 const BlogListing = () => {

@@ -1,11 +1,11 @@
-# robots.txt for blogs.writtenlyhub.com
+# robots.txt for www.writtenlyhub.com
 # Plain-text format required by search engines
 
 User-agent: *
 Allow: /
 
 # Sitemap helps crawlers discover all routes fast
-Sitemap: https://blogs.writtenlyhub.com/sitemap.xml
+Sitemap: https://www.writtenlyhub.com/sitemap_index.xml
 
 # Notes:
 # - This SPA serves client-side routes; allowing "/" covers all paths like /{category}/{slug}.

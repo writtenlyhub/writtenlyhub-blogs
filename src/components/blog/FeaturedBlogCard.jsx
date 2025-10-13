@@ -2,17 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const BLOG_BASE = "https://blogs.writtenlyhub.com";
-
-const getPostURL = post => {
-  if (post.link) {
-    return post.link.replace(
-      /^https?:\/\/(www\.)?writtenlyhub\.com/,
-      BLOG_BASE
-    );
-  }
-  return `${BLOG_BASE}/blog/${post.slug}`;
-};
+const getPostURL = post =>
+  post && post.link ? post.link : `/blog/${post?.slug || ""}`;
 
 const FeaturedBlogCard = ({ post, getCategoryName }) => {
   if (!post) {

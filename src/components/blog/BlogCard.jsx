@@ -2,17 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const BLOG_BASE = "https://blogs.writtenlyhub.com";
-
-const getPostURL = post => {
-  if (post.link) {
-    return post.link.replace(
-      /^https?:\/\/(www\.)?writtenlyhub\.com/,
-      BLOG_BASE
-    );
-  }
-  return `${BLOG_BASE}/blog/${post.slug}`;
-};
+const getPostURL = post =>
+  post && post.link ? post.link : `/blog/${post?.slug || ""}`;
 
 const BlogCard = ({ post, getCategoryName }) => {
   if (!post) {
@@ -54,7 +45,7 @@ const BlogCard = ({ post, getCategoryName }) => {
     excerpt.replace(/<[^>]*>/g, "").substring(0, 120) + "...";
 
   return (
-    <div className="block bg-white rounded-xl overflow-hidden border border-[#022150] w-full h-full group flex flex-col">
+    <div className="bg-white rounded-xl overflow-hidden border border-[#022150] w-full h-full group flex flex-col">
       <img
         src={featuredImage}
         alt={title}
