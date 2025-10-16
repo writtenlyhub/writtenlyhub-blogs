@@ -739,10 +739,10 @@ const BlogDetail = () => {
 
                 {/* RIGHT: Content Form */}
                 <div
-                  className="relative flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-start z-10"
+                  className="relative flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-start z-10 form-column"
                   style={{
                     minHeight: "600px",
-                    maxWidth: "540px",
+                    maxWidth: "760px",
                   }}
                 >
                   {/* Glass morphism card */}

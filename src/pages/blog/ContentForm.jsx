@@ -13,15 +13,24 @@ const ContentForm = () => {
   const formUrl = import.meta.env.VITE_WPFORMS_URL || defaultUrl;
 
   return (
-    <div className="mt-10 bg-white border p-0 rounded-lg shadow-md max-w-2xl mx-auto overflow-hidden">
+    <div
+      className="mt-10 px-8 py-10 bg-white border rounded-xl shadow-lg mx-auto overflow-hidden form-embed-wrapper"
+      style={{ maxWidth: "760px" }}
+    >
+      <h3 className="text-3xl font-bold ml-9 mb-6 text-[#04265C] tracking-tight">
+        Get your custom strategy today!
+      </h3>
       <iframe
         title="Contact form"
         src={formUrl}
         className="w-full"
-        style={{ minHeight: 720, border: 0 }}
+        style={{ minHeight: 450, border: 0 }}
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
       />
+      {/* NOTE: The button styling lives inside the WordPress iframe. To make it full width & less rounded, ensure in WPForms Additional CSS you target the form ID like:
+        #wpforms-form-18282 .wpforms-submit, #wpforms-submit-18282 { width:100%; border-radius:0.375rem !important; }
+        Adjust the ID if different. */}
     </div>
   );
 };
