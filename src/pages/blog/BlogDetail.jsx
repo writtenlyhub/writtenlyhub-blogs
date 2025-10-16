@@ -634,14 +634,11 @@ const BlogDetail = () => {
 
             {/* Modern split layout */}
             <div className="w-full mb-10">
-              <div
-                className="rounded-3xl flex flex-col-reverse lg:flex-row items-stretch gap-0 overflow-hidden relative border border-gray-100"
-                style={{ minHeight: "1000px" }}
-              >
+              <div className="rounded-3xl flex flex-col-reverse lg:flex-row items-stretch gap-0 overflow-hidden relative">
                 {/* Solid blue background for top 2/3 */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#04265C] via-[#063A80] to-[#0A4FA5]" />
+                {/* <div className="absolute inset-0 bg-gradient-to-br from-[#04265C] via-[#063A80] to-[#0A4FA5]" /> */}
 
-                {featuredImage && (
+                {/* {featuredImage && (
                   <div
                     className="absolute inset-x-0 bottom-0 flex items-center justify-center rounded-4xl"
                     style={{
@@ -656,29 +653,29 @@ const BlogDetail = () => {
                         width: "80%",
                         maxWidth: "80%",
                       }}
-                    />
-                    {/* Subtle overlay on image for cohesion */}
-                    <div className="absolute inset-0 bg-blue-900/20" />
+                    /> */}
+                {/* Subtle overlay on image for cohesion */}
+                {/* <div className="absolute inset-0 bg-blue-900/20" />
                   </div>
-                )}
+                )} */}
 
                 {/* LEFT: Blog Title + TLDR */}
                 <div
-                  className="relative flex-1 p-8 md:p-12 lg:p-14 flex flex-col justify-start z-10 mt-8"
+                  className="relative flex-1 p-8 md:p-12 lg:p-14 flex flex-col justify-start z-20 mt-8"
                   style={{ minHeight: "600px" }}
                 >
                   {/* Decorative floating elements */}
-                  <div className="absolute top-10 left-10 w-2 h-2 bg-orange-400 rounded-full animate-ping" />
+                  {/* <div className="absolute top-10 left-10 w-2 h-2 bg-orange-400 rounded-full animate-ping" />
                   <div
                     className="absolute bottom-20 right-20 w-1.5 h-1.5 bg-blue-400 rounded-full animate-ping"
                     style={{ animationDelay: "0.5s" }}
-                  />
+                  /> */}
 
                   {/* Accent line with glow */}
-                  <div className="relative w-20 h-1.5 mb-8 overflow-hidden rounded-full">
+                  {/* <div className="relative w-20 h-1.5 mb-8 overflow-hidden rounded-full">
                     <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400" />
                     <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-indigo-400 to-purple-400 blur-sm opacity-30 group-hover:opacity-40 transition-all duration-500" />
-                  </div>
+                  </div> */}
 
                   <h1
                     className="text-3xl md:text-4xl lg:text-6xl font-black mb-8 leading-[1.1] tracking-tight"
@@ -688,16 +685,21 @@ const BlogDetail = () => {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    <span className="bg-gradient-to-r from-white via-blue-50 to-blue-100 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r text-[#012150] bg-clip-text">
                       {post.title.rendered}
                     </span>
                   </h1>
 
                   {post.excerpt?.rendered && (
                     <div className="relative group">
-                      <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 rounded-2xl blur-md opacity-30 group-hover:opacity-4 transition-all duration-500" />
-
-                      <div className="relative p-6 md:p-8 rounded-2xl backdrop-blur-sm border border-blue-300/30 bg-white/95 shadow-xl">
+                      <div
+                        className="relative p-6 md:p-8 rounded-2xl lg:z-20 w-[calc(100%+8rem)]"
+                        style={{
+                          background: "#012150",
+                          color: "#ffffff",
+                          boxShadow: "10px 10px 0 #F75700",
+                        }}
+                      >
                         <div className="flex items-center gap-3 mb-4">
                           {/* Icon with gradient */}
                           <div className="relative">
@@ -718,7 +720,7 @@ const BlogDetail = () => {
                             </div>
                           </div>
                           <h2
-                            className="text-base md:text-lg font-black uppercase tracking-wide bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent"
+                            className="text-base md:text-2xl font-black uppercase tracking-wide text-white"
                             style={{
                               fontFamily: "'Space Grotesk', sans-serif",
                             }}
@@ -727,7 +729,7 @@ const BlogDetail = () => {
                           </h2>
                         </div>
                         <div
-                          className="prose prose-sm max-w-none text-gray-700 [&>ul]:list-disc [&>ul]:ml-4 [&>li]:text-gray-700 [&>ul]:space-y-2"
+                          className="prose prose-sm prose-invert max-w-none text-white [&>ul]:list-disc [&>ul]:ml-4 [&>ul]:space-y-2"
                           dangerouslySetInnerHTML={{
                             __html: post.excerpt.rendered,
                           }}
@@ -748,8 +750,8 @@ const BlogDetail = () => {
                   {/* Glass morphism card */}
                   <div className="" />
 
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-400/20 to-transparent rounded-bl-full" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-indigo-400/20 to-transparent rounded-tr-full" />
+                  {/* <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-400/20 to-transparent rounded-bl-full" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-indigo-400/20 to-transparent rounded-tr-full" /> */}
 
                   <div
                     className="absolute inset-0 opacity-[0.05]"

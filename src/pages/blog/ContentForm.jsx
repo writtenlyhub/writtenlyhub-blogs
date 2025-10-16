@@ -14,10 +14,14 @@ const ContentForm = () => {
 
   return (
     <div
-      className="mt-10 px-8 py-10 bg-white border rounded-xl shadow-lg mx-auto overflow-hidden form-embed-wrapper"
-      style={{ maxWidth: "760px" }}
+      className="mt-10 px-8 py-10 bg-white rounded-xl mx-auto overflow-hidden form-embed-wrapper"
+      style={{
+        maxWidth: "760px",
+        border: "2px solid #012150",
+        boxShadow: "10px 10px 0 #012150",
+      }}
     >
-      <h3 className="text-3xl font-bold ml-9 mb-6 text-[#04265C] tracking-tight">
+      <h3 className="text-3xl font-bold ml-8 mb-6 text-[#04265C] tracking-tight">
         Get your custom strategy today!
       </h3>
       <iframe
