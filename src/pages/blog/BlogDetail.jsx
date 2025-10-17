@@ -697,7 +697,7 @@ const BlogDetail = () => {
                         style={{
                           background: "#012150",
                           color: "#ffffff",
-                          boxShadow: "10px 10px 0 #F75700",
+                          boxShadow: "10px 10px 0 #f97316",
                         }}
                       >
                         <div className="flex items-center gap-3 mb-4">
