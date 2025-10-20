@@ -6,11 +6,18 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSidePanel, setShowSidePanel] = useState(false);
 
+  const blogBase = (import.meta?.env?.VITE_ROUTER_BASENAME || "/").replace(
+    /\/$/,
+    ""
+  );
   const navLinks = [
     { label: "About Us", href: "https://www.writtenlyhub.com/about/" },
     { label: "Services", href: "https://www.writtenlyhub.com/services/" },
-    { label: "Case Studies", href: "https://www.writtenlyhub.com/case-studies/" },
-    { label: "Blog", href: "/" },
+    {
+      label: "Case Studies",
+      href: "https://www.writtenlyhub.com/case-studies/",
+    },
+    { label: "Blog", href: `${blogBase || ""}/` },
     { label: "Career", href: "https://www.writtenlyhub.com/career/" },
     { label: "Write For Us", href: "https://www.writtenlyhub.com/career/" },
     { label: "Contact", href: "https://www.writtenlyhub.com/contact/" },
@@ -33,74 +40,74 @@ const Navbar = () => {
 
   // Mobile panel variants with bending effect
   const mobilePanelVariants = {
-    hidden: { 
+    hidden: {
       x: "100%",
       opacity: 0,
       skewX: "-12deg",
-      transformOrigin: "right center"
+      transformOrigin: "right center",
     },
-    visible: { 
+    visible: {
       x: 0,
       opacity: 1,
       skewX: "0deg",
-      transition: { 
+      transition: {
         type: "spring",
         stiffness: 400,
         damping: 30,
-        duration: 0.35
-      }
+        duration: 0.35,
+      },
     },
-    exit: { 
+    exit: {
       x: "100%",
       opacity: 0,
       skewX: "12deg",
-      transition: { 
+      transition: {
         ease: "easeIn",
-        duration: 0.25
-      }
-    }
+        duration: 0.25,
+      },
+    },
   };
 
   // Desktop panel variants without bending
   const desktopPanelVariants = {
-    hidden: { 
+    hidden: {
       x: "100%",
       opacity: 0,
     },
-    visible: { 
+    visible: {
       x: 0,
       opacity: 1,
-      transition: { 
+      transition: {
         type: "spring",
         stiffness: 300,
         damping: 25,
-        duration: 0.4
-      }
+        duration: 0.4,
+      },
     },
-    exit: { 
+    exit: {
       x: "100%",
       opacity: 0,
-      transition: { 
+      transition: {
         ease: "easeIn",
-        duration: 0.3
-      }
-    }
+        duration: 0.3,
+      },
+    },
   };
 
   const linkVariants = {
-    hidden: { 
-      x: 30, 
+    hidden: {
+      x: 30,
       opacity: 0,
     },
-    visible: (i) => ({
+    visible: i => ({
       x: 0,
       opacity: 1,
       transition: {
         delay: i * 0.05,
         ease: "easeOut",
-        duration: 0.2
-      }
-    })
+        duration: 0.2,
+      },
+    }),
   };
 
   return (
@@ -110,7 +117,10 @@ const Navbar = () => {
         <div className="mx-auto w-[90%] lg:w-[80%] py-6 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <a href="https://www.writtenlyhub.com" className="flex items-center">
+            <a
+              href="https://www.writtenlyhub.com"
+              className="flex items-center"
+            >
               <img
                 src="https://www.writtenlyhub.com/wp-content/themes/twentytwentyone/assets/home/logo-white.svg"
                 alt="WrittenlyHub Logo"
@@ -123,7 +133,10 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-8 lg:space-x-10 text-md items-center">
             {navLinks.map(({ label, href }) => (
               <li key={label} className="list-none group cursor-pointer">
-                <a href={href} className="relative inline-block py-1 text-white">
+                <a
+                  href={href}
+                  className="relative inline-block py-1 text-white"
+                >
                   {label}
                   <span className="absolute left-0 bottom-1/2 h-[1px] w-0 bg-black transform translate-y-1/2 transition-all duration-300 group-hover:w-[85%]"></span>
                 </a>
@@ -169,8 +182,8 @@ const Navbar = () => {
             exit="exit"
             variants={desktopPanelVariants}
             style={{
-              backfaceVisibility: 'hidden',
-              overflow: 'hidden'
+              backfaceVisibility: "hidden",
+              overflow: "hidden",
             }}
           >
             <div className="w-full max-w-6xl px-6 mx-auto flex flex-col lg:flex-row gap-12 items-center justify-center">
@@ -185,13 +198,20 @@ const Navbar = () => {
 
               {/* Right - Address */}
               <div className="w-full lg:w-1/2 text-center lg:text-left space-y-3">
-                <p className="text-2xl font-bold">We are in the heart of India's Silicon Valley,</p>
-                <p className="text-3xl font-bold italic text-orange-500">Namma Bengaluru</p>
+                <p className="text-2xl font-bold">
+                  We are in the heart of India's Silicon Valley,
+                </p>
+                <p className="text-3xl font-bold italic text-orange-500">
+                  Namma Bengaluru
+                </p>
                 <address className="not-italic text-lg leading-relaxed">
                   <h2 className="font-bold">Address</h2>
-                  172/1, 1st floor, 5th Main, 9th Cross Rd,<br />
-                  Opposite to Kairalee Nikethan Education Trust,<br />
-                  Indira Nagar 1st Stage,<br />
+                  172/1, 1st floor, 5th Main, 9th Cross Rd,
+                  <br />
+                  Opposite to Kairalee Nikethan Education Trust,
+                  <br />
+                  Indira Nagar 1st Stage,
+                  <br />
                   Bengaluru, Karnataka-560038
                 </address>
               </div>
@@ -209,9 +229,9 @@ const Navbar = () => {
             animate="visible"
             exit="exit"
             variants={mobilePanelVariants}
-            style={{ 
-              backfaceVisibility: 'hidden',
-              overflow: 'hidden'
+            style={{
+              backfaceVisibility: "hidden",
+              overflow: "hidden",
             }}
           >
             <div className="flex-1 flex flex-col justify-center items-end space-y-6 pr-4">

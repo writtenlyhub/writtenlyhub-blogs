@@ -8,6 +8,8 @@
     "generate:sitemap": "node ./scripts/generate-sitemap.mjs",
     "prebuild": "npm run generate:sitemap",
     "build": "vite build",
+    "prebuild:prod-blog": "set SITE_URL=https://www.writtenlyhub.com/blog&& set WP_API_BASE_URL=https://www.writtenlyhub.com/wp-json/wp/v2&& npm run generate:sitemap",
+    "build:prod-blog": "set VITE_ROUTER_BASENAME=/blog&& npm run prebuild:prod-blog&& vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

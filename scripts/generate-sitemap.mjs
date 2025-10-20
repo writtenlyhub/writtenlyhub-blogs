@@ -55,10 +55,6 @@ function formatDateISO(dateStr) {
 async function buildSitemap() {
   console.log('[sitemap] Generating sitemap.xml');
 
-  // Fetch categories once: map id -> slug
-  const categories = await fetchAll('/categories', { per_page: PER_PAGE });
-  const catSlugById = new Map(categories.map(c => [c.id, c.slug]));
-
   // Fetch published posts with embeds for potential future use
   const posts = await fetchAll('/posts', { status: 'publish', _embed: true });
 
@@ -73,12 +69,10 @@ async function buildSitemap() {
   ];
 
   for (const p of posts) {
-    const primaryCatId = Array.isArray(p.categories) && p.categories.length > 0 ? p.categories[0] : null;
-    const catSlug = (primaryCatId && catSlugById.get(primaryCatId)) || 'blog';
     const slug = p.slug || '';
     if (!slug) continue;
 
-    const url = `${SITE_URL}/${xmlEscape(catSlug)}/${xmlEscape(slug)}`;
+    const url = `${SITE_URL}/${xmlEscape(slug)}`;
     urls.push({
       loc: url,
       lastmod: formatDateISO(p.modified_gmt || p.modified || p.date_gmt || p.date || new Date().toISOString()),

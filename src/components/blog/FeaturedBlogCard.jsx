@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const getPostURL = post =>
-  post && post.link ? post.link : `/blog/${post?.slug || ""}`;
+const getPostURL = post => (post?.slug ? `/${post.slug}` : "/");
 
 const FeaturedBlogCard = ({ post, getCategoryName }) => {
   if (!post) {

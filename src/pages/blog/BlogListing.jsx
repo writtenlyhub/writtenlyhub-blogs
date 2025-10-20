@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import BlogHero from "../../components/blog/BlogHero";
 import BlogCard from "../../components/blog/BlogCard";
 import FeaturedBlogCard from "../../components/blog/FeaturedBlogCard";
 import wpAPI from "../../utils/api";
 
-const getPostURL = post => {
-  // Keep original WP link; fallback to same-site blog path
-  return post && post.link ? post.link : `/blog/${post?.slug || ""}`;
-};
+const getPostURL = post => (post?.slug ? `/${post.slug}` : "/");
 
 const BlogListing = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
@@ -262,9 +261,7 @@ const BlogListing = () => {
                 <div className="mb-12">
                   <div
                     className="cursor-pointer hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
-                    onClick={() =>
-                      (window.location.href = getPostURL(posts[0]))
-                    }
+                    onClick={() => navigate(getPostURL(posts[0]))}
                   >
                     <FeaturedBlogCard
                       post={posts[0]}
@@ -279,7 +276,7 @@ const BlogListing = () => {
                   <div
                     key={post.id}
                     className="cursor-pointer hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
-                    onClick={() => (window.location.href = getPostURL(post))}
+                    onClick={() => navigate(getPostURL(post))}
                   >
                     <BlogCard post={post} getCategoryName={getCategoryName} />
                   </div>
