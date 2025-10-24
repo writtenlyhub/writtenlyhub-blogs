@@ -1,0 +1,60 @@
+/* TLDR content helper classes used inside custom HTML written in WordPress */
+
+/* Wrapper (optional if you use a surrounding Group block with class wh-tldr) */
+.wh-tldr {
+  display: block;
+  /* Ensure base text is regular so bold has contrast */
+  font-weight: 400 !important;
+  /* React card provides background */
+}
+
+/* Ensure bold always renders for TL;DR content written in WP */
+.wh-tldr strong,
+.wh-tldr b,
+.wh-tldr li>strong,
+.wh-tldr p>strong,
+.wh-tldr li>b,
+.wh-tldr p>b {
+  font-weight: 800 !important;
+}
+
+/* List styling inside TLDR */
+.wh-tldr-list {
+  list-style: disc;
+  margin-left: 1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.wh-tldr-item {
+  color: #ffffff;
+  /* rendered on dark card */
+  line-height: 1.6;
+}
+
+.wh-tldr-item strong {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Optional: paragraphs */
+.wh-tldr p {
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+/* Optional: links */
+.wh-tldr a {
+  color: #ffedd5;
+  text-decoration: underline;
+}
+
+.wh-tldr a:hover {
+  color: #fdba74;
+}
+
+/* Extra specificity to beat any typography resets */
+.tldr-card .wh-tldr strong,
+.tldr-card .wh-tldr b {
+  font-weight: 800 !important;
+}

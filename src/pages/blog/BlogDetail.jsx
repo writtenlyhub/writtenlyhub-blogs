@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Facebook, Linkedin, Share2, Instagram, Youtube } from "lucide-react";
 import "./../../components/blog/BlogDetailContent.css";
+import "../../components/blog/TLDR.css";
 import BlogCard from "../../components/blog/BlogCard";
 import TOC from "../../components/blog/TOC";
 import FaqBlock from "../../components/blog/FaqBlock";
@@ -19,6 +20,7 @@ const BlogDetail = () => {
   const [categoryNames, setCategoryNames] = useState([]);
   const [loadingRelated, setLoadingRelated] = useState(false);
   const [faqs, setFaqs] = useState([]);
+  const [tldrHtml, setTldrHtml] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const contentRef = useRef(null);
   const publishedBlockRef = useRef(null);
@@ -91,6 +93,62 @@ const BlogDetail = () => {
     return { content: tempDiv.innerHTML, faqs: extractedFaqs };
   };
 
+  // Extract custom TL;DR from WordPress HTML content and remove it from main content
+  // Supported authoring in WP editor:
+  // - Wrap TLDR in a Group/HTML block with class "wh-tldr" (recommended)
+  // - Or surround with HTML comments: <!-- TLDR:START --> ... <!-- TLDR:END -->
+  const extractCustomTldr = html => {
+    if (!html) return { content: html, tldr: null };
+
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    let tldr = null;
+
+    // 1) By class wrapper
+    const tldrEl = tempDiv.querySelector(".wh-tldr, .wp-block-wh-tldr, .tldr");
+    if (tldrEl) {
+      tldr = tldrEl.innerHTML?.trim() || null;
+      tldrEl.parentNode?.removeChild(tldrEl);
+      return { content: tempDiv.innerHTML, tldr };
+    }
+
+    // 2) By comment markers
+    const walker = document.createTreeWalker(
+      tempDiv,
+      NodeFilter.SHOW_COMMENT,
+      null
+    );
+    let startNode = null;
+    let endNode = null;
+    while (walker.nextNode()) {
+      const val = (walker.currentNode.nodeValue || "").toLowerCase();
+      if (val.includes("tldr:start")) startNode = walker.currentNode;
+      if (val.includes("tldr:end")) {
+        endNode = walker.currentNode;
+        break;
+      }
+    }
+    if (startNode && endNode) {
+      let htmlFrag = "";
+      const toRemove = [];
+      let n = startNode.nextSibling;
+      while (n && n !== endNode) {
+        htmlFrag += n.outerHTML || n.textContent || "";
+        toRemove.push(n);
+        n = n.nextSibling;
+      }
+      toRemove.forEach(
+        node => node.parentNode && node.parentNode.removeChild(node)
+      );
+      startNode.parentNode && startNode.parentNode.removeChild(startNode);
+      endNode.parentNode && endNode.parentNode.removeChild(endNode);
+      tldr = htmlFrag.trim() || null;
+    }
+
+    return { content: tempDiv.innerHTML, tldr };
+  };
+
   // Process WordPress HTML content
   const processContent = html => {
     if (!html) return html;
@@ -128,11 +186,16 @@ const BlogDetail = () => {
 
         let processedContent = postData.content?.rendered || "";
         let extractedFaqs = [];
+        let extractedTldr = null;
 
         if (postData.content?.rendered) {
-          const result = extractAndRemoveFaqs(postData.content.rendered);
-          processedContent = result.content;
-          extractedFaqs = result.faqs;
+          // 1) Remove FAQs first
+          const faqResult = extractAndRemoveFaqs(postData.content.rendered);
+          // 2) Extract custom TL;DR and remove from content
+          const tldrResult = extractCustomTldr(faqResult.content);
+          processedContent = tldrResult.content;
+          extractedFaqs = faqResult.faqs;
+          extractedTldr = tldrResult.tldr;
         }
 
         setPost({
@@ -144,6 +207,7 @@ const BlogDetail = () => {
         });
 
         setFaqs(extractedFaqs);
+        setTldrHtml(extractedTldr);
 
         if (postData.categories?.length > 0) {
           try {
@@ -690,10 +754,10 @@ const BlogDetail = () => {
                     </span>
                   </h1>
 
-                  {post.excerpt?.rendered && (
+                  {(tldrHtml || post.excerpt?.rendered) && (
                     <div className="relative group">
                       <div
-                        className="relative p-6 md:p-8 rounded-2xl lg:z-20 w-[calc(100%+8rem)]"
+                        className="tldr-card relative p-6 md:p-8 rounded-2xl lg:z-20 w-[calc(100%+8rem)]"
                         style={{
                           background: "#012150",
                           color: "#ffffff",
@@ -728,12 +792,14 @@ const BlogDetail = () => {
                             TL;DR (Key Takeaways)
                           </h2>
                         </div>
-                        <div
-                          className="prose prose-sm prose-invert max-w-none text-white [&>ul]:list-disc [&>ul]:ml-4 [&>ul]:space-y-2"
-                          dangerouslySetInnerHTML={{
-                            __html: post.excerpt.rendered,
-                          }}
-                        />
+                        <div className="prose prose-sm prose-invert max-w-none text-white [&>ul]:list-disc [&>ul]:ml-4 [&>ul]:space-y-2 [&>p]:mb-2">
+                          <div
+                            className="wh-tldr [&_strong]:font-bold [&_b]:font-bold"
+                            dangerouslySetInnerHTML={{
+                              __html: tldrHtml || post.excerpt?.rendered || "",
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   )}
@@ -769,12 +835,13 @@ const BlogDetail = () => {
               </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex flex-col lg:flex-row gap-8 overflow-visible">
               {/* Table of Contents - hidden on mobile */}
               <aside className="hidden lg:block lg:w-3/12 lg:order-first">
                 <div
                   className="sticky"
                   style={{
+                    position: "sticky",
                     top: `${stickyTop}px`,
                     maxHeight: `calc(100vh - ${stickyTop}px - 20px)`,
                   }}
@@ -931,7 +998,10 @@ const BlogDetail = () => {
 
               {/* Sidebar - hidden on mobile */}
               <aside className="hidden lg:block lg:w-3/12">
-                <div className="sticky" style={{ top: `${stickyTop}px` }}>
+                <div
+                  className="sticky"
+                  style={{ position: "sticky", top: `${stickyTop}px` }}
+                >
                   <SocialMediaIcons />
                   <div className="mt-8">
                     <NewsletterSubscribe />
