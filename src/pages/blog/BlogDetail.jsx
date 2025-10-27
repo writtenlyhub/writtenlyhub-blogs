@@ -10,6 +10,7 @@ import FaqBlock from "../../components/blog/FaqBlock";
 import wpAPI from "../../utils/api";
 import NewsletterSubscribe from "../../components/blog/NewsletterSubscribe";
 import ContentForm from "./ContentForm";
+import { decodeHtmlEntities } from "../../utils/html";
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -46,7 +47,7 @@ const BlogDetail = () => {
       return;
     }
 
-    const cleanText = text.replace(/<[^>]*>/g, "");
+    const cleanText = decodeHtmlEntities(text.replace(/<[^>]*>/g, ""));
 
     if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -384,9 +385,12 @@ const BlogDetail = () => {
   // Share handler
   const handleShare = async platform => {
     const url = window.location.href;
-    const title = post?.title?.rendered?.replace(/<[^>]*>/g, "") || "";
-    const text =
-      post?.excerpt?.rendered?.replace(/<[^>]*>/g, "").substring(0, 200) || "";
+    const title = decodeHtmlEntities(
+      post?.title?.rendered?.replace(/<[^>]*>/g, "") || ""
+    );
+    const text = decodeHtmlEntities(
+      (post?.excerpt?.rendered?.replace(/<[^>]*>/g, "") || "").substring(0, 200)
+    );
 
     switch (platform) {
       case "facebook":
@@ -749,9 +753,10 @@ const BlogDetail = () => {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    <span className="bg-gradient-to-r text-[#012150] bg-clip-text">
-                      {post.title.rendered}
-                    </span>
+                    <span
+                      className="bg-gradient-to-r text-[#012150] bg-clip-text"
+                      dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                    />
                   </h1>
 
                   {(tldrHtml || post.excerpt?.rendered) && (
