@@ -17,7 +17,7 @@ const Navbar = () => {
       label: "Case Studies",
       href: "https://www.writtenlyhub.com/case-studies/",
     },
-    { label: "Blog", href: `${blogBase || ""}/` },
+    { label: "Blog", href: `https://www.writtenlyhub.com/blog/` },
     { label: "Career", href: "https://www.writtenlyhub.com/career/" },
     { label: "Write For Us", href: "https://www.writtenlyhub.com/career/" },
     { label: "Contact", href: "https://www.writtenlyhub.com/contact/" },
@@ -118,7 +118,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <a
-              href="https://www.writtenlyhub.com"
+              href="https://www.writtenlyhub.com/blog/"
               className="flex items-center"
             >
               <img
