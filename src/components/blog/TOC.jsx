@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import './TOC.css';
+import React, { useState, useEffect } from "react";
+import "./TOC.css";
 
 const TOC = ({ contentRef }) => {
   const [headings, setHeadings] = useState([]);
-  const [activeHeading, setActiveHeading] = useState('');
+  const [activeHeading, setActiveHeading] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -11,11 +11,11 @@ const TOC = ({ contentRef }) => {
       if (!contentRef?.current) return;
 
       setTimeout(() => {
-        let headingElements = contentRef.current.querySelectorAll('h1');
-        
+        let headingElements = contentRef.current.querySelectorAll("h1");
+
         // If no h1s found, fallback to h2
         if (headingElements.length === 0) {
-          headingElements = contentRef.current.querySelectorAll('h2');
+          headingElements = contentRef.current.querySelectorAll("h2");
         }
 
         if (headingElements.length === 0) {
@@ -23,27 +23,29 @@ const TOC = ({ contentRef }) => {
           return;
         }
 
-        const headingsList = Array.from(headingElements).map((heading, index) => {
-          let headingId = heading.id;
+        const headingsList = Array.from(headingElements).map(
+          (heading, index) => {
+            let headingId = heading.id;
 
-          if (!headingId) {
-            headingId = heading.textContent
-              .toLowerCase()
-              .replace(/[^\w\s-]/g, '')
-              .replace(/\s+/g, '-')
-              .trim();
+            if (!headingId) {
+              headingId = heading.textContent
+                .toLowerCase()
+                .replace(/[^\w\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .trim();
 
-            headingId = `${headingId}-${index}`;
-            heading.id = headingId;
+              headingId = `${headingId}-${index}`;
+              heading.id = headingId;
+            }
+
+            return {
+              id: headingId,
+              text: heading.textContent.trim(),
+              level: parseInt(heading.tagName.charAt(1)),
+              element: heading,
+            };
           }
-
-          return {
-            id: headingId,
-            text: heading.textContent.trim(),
-            level: parseInt(heading.tagName.charAt(1)),
-            element: heading
-          };
-        });
+        );
 
         setHeadings(headingsList);
         setIsVisible(true);
@@ -57,13 +59,13 @@ const TOC = ({ contentRef }) => {
     if (headings.length === 0) return;
 
     const observerOptions = {
-      rootMargin: '-10% 0% -80% 0%',
-      threshold: [0, 0.25, 0.5, 0.75, 1]
+      rootMargin: "-10% 0% -80% 0%",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
     };
 
-    const observerCallback = (entries) => {
-      let currentActive = '';
-      entries.forEach((entry) => {
+    const observerCallback = entries => {
+      let currentActive = "";
+      entries.forEach(entry => {
         if (entry.isIntersecting && entry.intersectionRatio > 0) {
           currentActive = entry.target.id;
         }
@@ -74,7 +76,10 @@ const TOC = ({ contentRef }) => {
       }
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
 
     headings.forEach(({ id }) => {
       const element = document.getElementById(id);
@@ -97,11 +102,12 @@ const TOC = ({ contentRef }) => {
     if (element) {
       const headerOffset = 100;
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
 
       setActiveHeading(headingId);
@@ -113,35 +119,34 @@ const TOC = ({ contentRef }) => {
   }
 
   return (
-    <div className="toc-wrapper">
-      <h4 className="toc-title">Contents</h4>
-<nav className="toc-nav">
-  {headings.map((heading) => (
-    <a
-      key={heading.id}
-      href={`#${heading.id}`}
-      onClick={(e) => scrollToHeading(heading.id, e)}
-      className={`toc-item toc-level-${heading.level} ${
-        activeHeading === heading.id ? 'toc-active' : ''
-      }`}
-    >
-      {heading.text}
-    </a>
-  ))}
+    <div className="toc-wrapper border-t border-gray-200">
+      <h4 className="toc-title pt-4">Contents</h4>
+      <nav className="toc-nav">
+        {headings.map(heading => (
+          <a
+            key={heading.id}
+            href={`#${heading.id}`}
+            onClick={e => scrollToHeading(heading.id, e)}
+            className={`toc-item toc-level-${heading.level} ${
+              activeHeading === heading.id ? "toc-active" : ""
+            }`}
+          >
+            {heading.text}
+          </a>
+        ))}
 
-  {/* Back to Top link */}
-  <a
-    href="#"
-    onClick={(e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }}
-    className="toc-item toc-back-to-top"
-  >
-    ↑ Back to Top
-  </a>
-</nav>
-
+        {/* Back to Top link */}
+        <a
+          href="#"
+          onClick={e => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="toc-item toc-back-to-top"
+        >
+          ↑ Back to Top
+        </a>
+      </nav>
     </div>
   );
 };

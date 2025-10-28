@@ -489,7 +489,7 @@ const BlogDetail = () => {
     console.log("Post data:", post);
 
     return (
-      <div className="mt-8 pt-14 border-t border-gray-200">
+      <div className="mt-8 pt-5 border-t border-gray-200">
         <h4 className="text-sm font-semibold text-gray-700 mb-4">
           About the author
         </h4>
@@ -727,7 +727,7 @@ const BlogDetail = () => {
                   </div>
                 )} */}
 
-                {/* LEFT: Blog Title + TLDR */}
+                {/* LEFT side: Blog Title + TLDR */}
                 <div
                   className="relative flex-1 p-8 md:p-12 lg:p-14 flex flex-col justify-start z-20 mt-8"
                   style={{ minHeight: "600px" }}
@@ -810,7 +810,7 @@ const BlogDetail = () => {
                   )}
                 </div>
 
-                {/* RIGHT: Content Form */}
+                {/* RIGHT side: Content Form */}
                 <div
                   className="relative flex-1 p-8 md:p-10 lg:p-12 flex flex-col justify-start z-10 form-column"
                   style={{
@@ -840,20 +840,18 @@ const BlogDetail = () => {
               </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-8 overflow-visible">
+            <div className="flex flex-col lg:flex-row gap-8 overflow-visible ">
               {/* Table of Contents - hidden on mobile */}
-              <aside className="hidden lg:block lg:w-3/12 lg:order-first">
+              <aside className="hidden lg:block lg:w-3/12 lg:order-first ">
                 <div
-                  className="sticky"
-                  style={{
-                    position: "sticky",
-                    top: `${stickyTop}px`,
-                    maxHeight: `calc(100vh - ${stickyTop}px - 20px)`,
-                  }}
+                  className="sticky pt-4 mt-6"
+                  style={{ position: "sticky", top: `${stickyTop}px` }}
                 >
-                  <div className="space-y-6">
+                  <div className="space-y-8">
                     <TOC contentRef={contentRef} />
-                    <AuthorSection />
+                    <div className="mt-0">
+                      <AuthorSection />
+                    </div>
                   </div>
                 </div>
               </aside>
