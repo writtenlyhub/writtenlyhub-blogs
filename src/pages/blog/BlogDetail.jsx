@@ -11,6 +11,7 @@ import wpAPI from "../../utils/api";
 import NewsletterSubscribe from "../../components/blog/NewsletterSubscribe";
 import ContentForm from "./ContentForm";
 import { decodeHtmlEntities } from "../../utils/html";
+import { Helmet } from "react-helmet-async";
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -671,6 +672,18 @@ const BlogDetail = () => {
 
   const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
   const processedContent = processContent(post.content?.rendered);
+  // Prefer Yoast SEO meta title when available, else fall back to post title
+  const metaTitle =
+    post?.yoast_head_json?.title ||
+    decodeHtmlEntities((post?.title?.rendered || "").replace(/<[^>]*>/g, ""));
+  const metaDescription =
+    post?.yoast_head_json?.description ||
+    decodeHtmlEntities(
+      (post?.excerpt?.rendered || "")
+        .replace(/<[^>]*>/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+    );
 
   function EmbeddedForm() {
     return <div dangerouslySetInnerHTML={{ __html: '[wpforms id="18282"]' }} />;
@@ -678,6 +691,18 @@ const BlogDetail = () => {
 
   return (
     <div className="min-h-screen bg-white mx-10">
+      {/* Dynamic head tags for this post */}
+      <Helmet>
+        {metaTitle && <title>{metaTitle}</title>}
+        {metaDescription && (
+          <meta name="description" content={metaDescription} />
+        )}
+        {featuredImage && <meta property="og:image" content={featuredImage} />}
+        {metaTitle && <meta property="og:title" content={metaTitle} />}
+        {metaDescription && (
+          <meta property="og:description" content={metaDescription} />
+        )}
+      </Helmet>
       <div className="container mx-auto px-4 py-12">
         <div className="flex justify-center">
           <div className="w-full max-w-9xl">
