@@ -819,7 +819,7 @@ const BlogDetail = () => {
                               fontFamily: "'Space Grotesk', sans-serif",
                             }}
                           >
-                            TL;DR (Key Takeaways)
+                            Overview
                           </h2>
                         </div>
                         <div className="prose prose-sm prose-invert max-w-none text-white [&>ul]:list-disc [&>ul]:ml-4 [&>ul]:space-y-2 [&>p]:mb-2">

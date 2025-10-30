@@ -24,13 +24,14 @@ const BlogCard = ({ post, getCategoryName }) => {
     post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
     "/assets/placeholder.png";
 
-  const date = post.date
-    ? new Date(post.date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-    : "";
+  const date =
+    post.modified || post.date
+      ? new Date(post.modified || post.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "";
 
   const categoryId = post.categories?.[0];
   const categoryName =
